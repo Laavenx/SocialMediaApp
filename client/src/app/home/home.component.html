@@ -1,0 +1,3 @@
+<button (click)="registerToggle()">Register</button>
+
+<app-register *ngIf="registerMode" (cancelRegiser)="cancelRegisterMode($event)"></app-register>

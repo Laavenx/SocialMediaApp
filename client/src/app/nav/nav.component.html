@@ -1,0 +1,11 @@
+<form *ngIf="(accountService.currentUser$ | async) === null" #loginForm="ngForm" (ngSubmit)="login()"
+    autocomplete="off">
+    <input name="username" [(ngModel)]="model.username" type="text" placeholder="login">
+    <input name="password" [(ngModel)]="model.password" type="password" placeholder="password">
+    <button type="submit">submit</button>
+</form>
+
+<div *ngIf="accountService.currentUser$ | async">
+    <button (click)="logout()">Logout</button>
+    <h1>Logged in</h1>
+</div>

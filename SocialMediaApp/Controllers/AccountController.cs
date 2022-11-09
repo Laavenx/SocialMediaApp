@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using SocialMediaApp.Data;
 using SocialMediaApp.DTOs;
 using SocialMediaApp.Entities;
+using SocialMediaApp.Interfaces;
 using SQLitePCL;
 
 namespace SocialMediaApp.Controllers
@@ -11,13 +12,15 @@ namespace SocialMediaApp.Controllers
     public class AccountController : BaseApiController
     {
         private AppDbContext _context;
-        public AccountController(AppDbContext context)
+        private ITokenService _tokenService;
+        public AccountController(AppDbContext context, ITokenService tokenService)
         {
             _context = context;
+            _tokenService = tokenService;
         }
 
         [HttpPost("register")]
-        public async Task<ActionResult<AppUser>> Register(RegisterDto registerDto)
+        public async Task<ActionResult<UserDto>> Register(RegisterDto registerDto)
         {
             if (await _context.Users.AnyAsync(u => u.UserName == registerDto.UserName))
                 return BadRequest("Username is taken");
@@ -31,11 +34,15 @@ namespace SocialMediaApp.Controllers
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
-            return user;
+            return new UserDto
+            {
+                UserName = user.UserName,
+                Token = _tokenService.createToken(user)
+            };
         }
 
         [HttpPost("login")]
-        public async Task<ActionResult<AppUser>> Login(LoginDto loginDto)
+        public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
         {
             var user = await _context.Users
                 .SingleOrDefaultAsync(u => u.UserName == loginDto.UserName);
@@ -44,7 +51,11 @@ namespace SocialMediaApp.Controllers
 
             if (loginDto.Password != user.Password) return Unauthorized("Invalid username or password");
 
-            return user;
+            return new UserDto
+            {
+                UserName = user.UserName,
+                Token = _tokenService.createToken(user)
+            };
         }
     }
 }
