@@ -1,3 +1,18 @@
+<a routerLink="/">Social Media App</a>
+<hr>
+<div class="div">
+    <ng-container *ngIf="(accountService.currentUser$ | async) as user">
+        <a routerLink="/members">Members</a>
+        <hr>
+        <a routerLink="/lists">Lists</a>
+        <hr>
+        <a routerLink="/messages">Messages</a>
+        <hr>
+        {{user.username}}
+    </ng-container>
+    <a routerLink="/errors">Errors</a>
+</div>
+
 <form *ngIf="(accountService.currentUser$ | async) === null" #loginForm="ngForm" (ngSubmit)="login()"
     autocomplete="off">
     <input name="username" [(ngModel)]="model.username" type="text" placeholder="login">

@@ -22,12 +22,12 @@ namespace SocialMediaApp.Controllers
         [HttpPost("register")]
         public async Task<ActionResult<UserDto>> Register(RegisterDto registerDto)
         {
-            if (await _context.Users.AnyAsync(u => u.UserName == registerDto.UserName))
+            if (await _context.Users.AnyAsync(u => u.UserName == registerDto.Username))
                 return BadRequest("Username is taken");
 
             var user = new AppUser
             {
-                UserName = registerDto.UserName,
+                UserName = registerDto.Username,
                 Password = registerDto.Password
             };
 
@@ -36,7 +36,7 @@ namespace SocialMediaApp.Controllers
 
             return new UserDto
             {
-                UserName = user.UserName,
+                Username = user.UserName,
                 Token = _tokenService.createToken(user)
             };
         }
@@ -45,7 +45,7 @@ namespace SocialMediaApp.Controllers
         public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
         {
             var user = await _context.Users
-                .SingleOrDefaultAsync(u => u.UserName == loginDto.UserName);
+                .SingleOrDefaultAsync(u => u.UserName == loginDto.Username);
 
             if (user == null) return Unauthorized("Invalid username or password");
 
@@ -53,7 +53,7 @@ namespace SocialMediaApp.Controllers
 
             return new UserDto
             {
-                UserName = user.UserName,
+                Username = user.UserName,
                 Token = _tokenService.createToken(user)
             };
         }
