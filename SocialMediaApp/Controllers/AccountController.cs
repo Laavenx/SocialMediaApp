@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SocialMediaApp.Data;
@@ -11,10 +12,12 @@ namespace SocialMediaApp.Controllers
 {
     public class AccountController : BaseApiController
     {
+        private readonly IMapper _mapper;
         private AppDbContext _context;
         private ITokenService _tokenService;
-        public AccountController(AppDbContext context, ITokenService tokenService)
+        public AccountController(AppDbContext context, ITokenService tokenService, IMapper mapper)
         {
+            _mapper = mapper;
             _context = context;
             _tokenService = tokenService;
         }
@@ -25,11 +28,9 @@ namespace SocialMediaApp.Controllers
             if (await _context.Users.AnyAsync(u => u.UserName == registerDto.Username))
                 return BadRequest("Username is taken");
 
-            var user = new AppUser
-            {
-                UserName = registerDto.Username,
-                Password = registerDto.Password
-            };
+            var user = _mapper.Map<AppUser>(registerDto);
+
+
 
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
@@ -37,7 +38,8 @@ namespace SocialMediaApp.Controllers
             return new UserDto
             {
                 Username = user.UserName,
-                Token = _tokenService.createToken(user)
+                Token = _tokenService.createToken(user),
+                KnownAs = user.KnownAs, 
             };
         }
 
@@ -45,6 +47,7 @@ namespace SocialMediaApp.Controllers
         public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
         {
             var user = await _context.Users
+                .Include(p => p.Photos)
                 .SingleOrDefaultAsync(u => u.UserName == loginDto.Username);
 
             if (user == null) return Unauthorized("Invalid username or password");
@@ -54,7 +57,9 @@ namespace SocialMediaApp.Controllers
             return new UserDto
             {
                 Username = user.UserName,
-                Token = _tokenService.createToken(user)
+                Token = _tokenService.createToken(user),
+                PhotoUrl = user.Photos.FirstOrDefault(x => x.IsMain)?.Url,
+                KnownAs = user.KnownAs
             };
         }
     }

@@ -3,6 +3,7 @@ using SocialMediaApp.Interfaces;
 using SocialMediaApp.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using SocialMediaApp.Helpers;
 
 namespace SocialMediaApp.Extensions
 {
@@ -21,6 +22,8 @@ namespace SocialMediaApp.Extensions
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            services.Configure<CloudinarySettings>(config.GetSection("CloudinarySettings"));
+            services.AddScoped<IPhotoService, PhotoService>();
 
             return services;
         }

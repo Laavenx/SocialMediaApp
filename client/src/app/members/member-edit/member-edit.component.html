@@ -1,0 +1,26 @@
+<div *ngIf="member">
+    <h1>{{member.knownAs}}</h1>
+        
+    <form #editForm="ngForm" id="editForm" (ngSubmit)="updateMember()">
+        <p>Introduction:</p>
+        <textarea [(ngModel)]="member.introduction" name="introduction" rows="6"></textarea>
+
+        <p>LookingFor:</p>
+        <textarea [(ngModel)]="member.lookingFor" name="lookingFor" rows="6"></textarea>
+
+        <p>Interests:</p>
+        <textarea [(ngModel)]="member.interests" name="interests" rows="6"></textarea>
+
+        <br>
+        City:<input type="text" [(ngModel)]="member.city" name="city">
+        <br>
+        Country:<input type="text" [(ngModel)]="member.country" name="country"> 
+    </form>
+
+    <button type="submit" [disabled]="!editForm.dirty" form="editForm">Submit</button>
+
+    <app-photo-editor [member]="member"></app-photo-editor>
+    <div *ngIf="editForm.dirty">
+        <p>alarm</p>
+    </div>
+</div>

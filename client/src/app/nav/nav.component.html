@@ -8,7 +8,10 @@
         <hr>
         <a routerLink="/messages">Messages</a>
         <hr>
+        <a routerLink="/member/edit">Edit</a>
+        <hr>
         {{user.username}}
+        <img src="{{user.photoUrl || './assets/user.png'}}" alt="user main photo">
     </ng-container>
     <a routerLink="/errors">Errors</a>
 </div>

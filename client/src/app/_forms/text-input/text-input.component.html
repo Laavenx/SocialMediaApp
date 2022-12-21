@@ -1,0 +1,17 @@
+<input
+    [formControl]="ngControl.control"
+    [class.invalid]="ngControl.invalid && ngControl.touched"
+    placeholder={{label}}
+    type={{type}}
+    >
+
+<p *ngIf="ngControl.errors?.required && ngControl.touched">
+    Enter {{label}}</p>
+<p *ngIf="ngControl.errors?.minlength && ngControl.touched">
+    {{label}} must be at least {{ngControl.errors.minlength.requiredLength}}</p>
+<p *ngIf="ngControl.errors?.maxlength && ngControl.touched">
+    {{label}} must be shorter than {{ngControl.errors.maxlength.requiredLength}}</p>
+<p *ngIf="ngControl.errors?.notMatching && ngControl.touched">
+    Passwords dont match</p>
+<p *ngIf="ngControl.errors?.dateInvalid && ngControl.touched">
+    Date not good</p>

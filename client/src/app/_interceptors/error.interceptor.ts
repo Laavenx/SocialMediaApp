@@ -43,7 +43,7 @@ export class ErrorInterceptor implements HttpInterceptor {
               this.router.navigateByUrl('/server-error', navigationExtras);
               break;
             default:
-              this.toastr.error('something unexpected went wrong');
+              this.toastr.error('Server Error');
               console.log(error);
               break;
           }

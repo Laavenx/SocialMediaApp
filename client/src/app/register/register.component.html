@@ -1,6 +1,33 @@
-<form #registerForm="ngForm" (ngSubmit)="register()" autocomplete="off">
-    <input name="username" [(ngModel)]="model.username" type="text" placeholder="login">
-    <input name="password" [(ngModel)]="model.password" type="password" placeholder="password">
+<form [formGroup]="registerForm" (ngSubmit)="register()" autocomplete="off">
+
+    <div>
+        <label>I am a:</label>
+        <label>
+            <input type="radio" value="male" formControlName="gender">male
+        </label>
+        <label>
+            <input type="radio" value="female" formControlName="gender">Female
+        </label>
+    </div>
+    
+    <app-text-input [formControl]="registerForm.controls['username']"
+        [label]="'Username'"></app-text-input>    
+    <app-text-input [formControl]="registerForm.controls['knownAs']"
+        [label]="'Known As'"></app-text-input>
+    <app-text-input [formControl]="registerForm.controls['dateOfBirth']"
+        [label]="'Date of Birth'" type="date"></app-text-input>
+    <app-text-input [formControl]="registerForm.controls['city']"
+        [label]="'City'"></app-text-input>
+    <app-text-input [formControl]="registerForm.controls['country']"
+        [label]="'Country'"></app-text-input>
+    <app-text-input [formControl]="registerForm.controls['password']"
+        [label]="'Password'" [type]="'password'"></app-text-input>
+    <app-text-input [formControl]="registerForm.controls['confirmPassword']"
+        [label]="'Confirm Password'" [type]="'password'"></app-text-input>
+
     <button type="submit">submit</button>
     <button (click)="cancel()">Cancel</button>
 </form>
+
+<p>Form value: {{registerForm.value | json}}</p>
+<p>Form status: {{registerForm.status | json}}</p>

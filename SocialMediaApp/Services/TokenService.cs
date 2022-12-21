@@ -12,7 +12,6 @@ namespace SocialMediaApp.Services
         private readonly SymmetricSecurityKey _SecurityKey;
         public TokenService(IConfiguration config)
         {
-
             _SecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["TokenKey"]));
         }
 
