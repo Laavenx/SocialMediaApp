@@ -28,9 +28,8 @@ namespace SocialMediaApp.Controllers
             if (await _context.Users.AnyAsync(u => u.UserName == registerDto.Username))
                 return BadRequest("Username is taken");
 
+            registerDto.CreatedAt = DateTime.UtcNow;
             var user = _mapper.Map<AppUser>(registerDto);
-
-
 
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
@@ -39,7 +38,8 @@ namespace SocialMediaApp.Controllers
             {
                 Username = user.UserName,
                 Token = _tokenService.createToken(user),
-                KnownAs = user.KnownAs, 
+                KnownAs = user.KnownAs,
+                Gender = user.Gender,
             };
         }
 
@@ -59,7 +59,8 @@ namespace SocialMediaApp.Controllers
                 Username = user.UserName,
                 Token = _tokenService.createToken(user),
                 PhotoUrl = user.Photos.FirstOrDefault(x => x.IsMain)?.Url,
-                KnownAs = user.KnownAs
+                KnownAs = user.KnownAs,
+                Gender = user.Gender,
             };
         }
     }

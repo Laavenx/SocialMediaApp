@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
-using SocialMediaApp.Helpers;
+
 
 namespace SocialMediaApp.DTOs
 {
@@ -20,5 +20,6 @@ namespace SocialMediaApp.DTOs
         public DateTime? DateOfBirth { get; set; }
         [Required] public string City { get; set; }
         [Required] public string Country { get; set; }
+        public DateTime? CreatedAt { get; set; }  
     }
 }
