@@ -25,6 +25,8 @@ import { LoadingInterceptor } from './_interceptors/loading.interceptor';
 import { PhotoEditorComponent } from './members/photo-editor/photo-editor.component';
 import { TextInputComponent } from './_forms/text-input/text-input.component';
 import { TimeagoModule } from 'ngx-timeago';
+import { MemberMessagesComponent } from './messages/member-messages/member-messages.component';
+import { MessageListComponent } from './messages/message-list/message-list.component';
 
 @NgModule({
   declarations: [
@@ -43,6 +45,8 @@ import { TimeagoModule } from 'ngx-timeago';
     MemberEditComponent,
     PhotoEditorComponent,
     TextInputComponent,
+    MemberMessagesComponent,
+    MessageListComponent,
   ],
   imports: [
     BrowserModule,

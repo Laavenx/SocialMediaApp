@@ -1,1 +1,7 @@
-<p>messages works!</p>
+<div *ngIf="user">
+    <app-member-messages [username]="this.user"></app-member-messages>
+</div>
+
+<div *ngIf="!user">
+    <app-message-list></app-message-list>
+</div>

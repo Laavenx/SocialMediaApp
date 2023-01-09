@@ -1,1 +1,14 @@
-<p>lists works!</p>
+<div>
+    <h2>{{predicate === 'liked' ? 'Member I like' : 'Members who like me'}}</h2>
+</div>
+
+<div>
+    <select name="liked" [(ngModel)]="predicate" (ngModelChange)="loadLikes()">
+        <option value="liked">Members i like</option>
+        <option value="likedBy">Member who like me</option>
+    </select>
+</div>
+
+<div *ngFor="let member of members">
+    <app-member-card [member]="member"></app-member-card>
+</div>

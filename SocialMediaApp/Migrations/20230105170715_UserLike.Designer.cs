@@ -11,8 +11,8 @@ using SocialMediaApp.Data;
 namespace SocialMediaApp.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20221123201359_migration1")]
-    partial class migration1
+    [Migration("20230105170715_UserLike")]
+    partial class UserLike
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -44,11 +44,9 @@ namespace SocialMediaApp.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Interests")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Introduction")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("KnownAs")
@@ -59,7 +57,6 @@ namespace SocialMediaApp.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("LookingFor")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Password")
@@ -88,6 +85,7 @@ namespace SocialMediaApp.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("PublicId")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Url")
@@ -101,6 +99,21 @@ namespace SocialMediaApp.Migrations
                     b.ToTable("Photos");
                 });
 
+            modelBuilder.Entity("SocialMediaApp.Entities.UserLike", b =>
+                {
+                    b.Property<int>("SourceUserId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("TargetUserId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("SourceUserId", "TargetUserId");
+
+                    b.HasIndex("TargetUserId");
+
+                    b.ToTable("Likes");
+                });
+
             modelBuilder.Entity("SocialMediaApp.Entities.Photo", b =>
                 {
                     b.HasOne("SocialMediaApp.Entities.AppUser", "AppUser")
@@ -112,8 +125,31 @@ namespace SocialMediaApp.Migrations
                     b.Navigation("AppUser");
                 });
 
+            modelBuilder.Entity("SocialMediaApp.Entities.UserLike", b =>
+                {
+                    b.HasOne("SocialMediaApp.Entities.AppUser", "SourceUser")
+                        .WithMany("LikedUsers")
+                        .HasForeignKey("SourceUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SocialMediaApp.Entities.AppUser", "TargetUser")
+                        .WithMany("LikedByUsers")
+                        .HasForeignKey("TargetUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("SourceUser");
+
+                    b.Navigation("TargetUser");
+                });
+
             modelBuilder.Entity("SocialMediaApp.Entities.AppUser", b =>
                 {
+                    b.Navigation("LikedByUsers");
+
+                    b.Navigation("LikedUsers");
+
                     b.Navigation("Photos");
                 });
 #pragma warning restore 612, 618

@@ -1,0 +1,18 @@
+<div>
+    <select name="gender" [(ngModel)]="container" (ngModelChange)="loadMessages()">
+        <option value="Unread">Unread</option>
+        <option value="Inbox">Inbox</option>
+        <option value="Outbox">Outbox</option>
+    </select>
+</div>
+
+<div *ngIf="messages && !messages[0]">
+    <div>No messages</div>
+</div>
+
+<div *ngIf="messages">
+    <div *ngFor="let message of messages">
+        {{message.content}}, {{message.id}}, {{message.recipientUsername}}, {{message.senderUsername}}
+        <button (click)="stopPropagation()" (click)="deleteMessage(message.id)">Delete</button>
+    </div>
+</div>

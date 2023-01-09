@@ -70,6 +70,51 @@ namespace SocialMediaApp.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("SocialMediaApp.Entities.Message", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("DateRead")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("MessageSent")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("RecipientDeleted")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("RecipientId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("RecipientUsername")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("SenderDeleted")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("SenderId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("SenderUsername")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RecipientId");
+
+                    b.HasIndex("SenderId");
+
+                    b.ToTable("Messages");
+                });
+
             modelBuilder.Entity("SocialMediaApp.Entities.Photo", b =>
                 {
                     b.Property<int>("Id")
@@ -97,6 +142,40 @@ namespace SocialMediaApp.Migrations
                     b.ToTable("Photos");
                 });
 
+            modelBuilder.Entity("SocialMediaApp.Entities.UserLike", b =>
+                {
+                    b.Property<int>("SourceUserId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("TargetUserId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("SourceUserId", "TargetUserId");
+
+                    b.HasIndex("TargetUserId");
+
+                    b.ToTable("Likes");
+                });
+
+            modelBuilder.Entity("SocialMediaApp.Entities.Message", b =>
+                {
+                    b.HasOne("SocialMediaApp.Entities.AppUser", "Recipient")
+                        .WithMany("MessageReceived")
+                        .HasForeignKey("RecipientId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("SocialMediaApp.Entities.AppUser", "Sender")
+                        .WithMany("MessageSent")
+                        .HasForeignKey("SenderId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Recipient");
+
+                    b.Navigation("Sender");
+                });
+
             modelBuilder.Entity("SocialMediaApp.Entities.Photo", b =>
                 {
                     b.HasOne("SocialMediaApp.Entities.AppUser", "AppUser")
@@ -108,8 +187,35 @@ namespace SocialMediaApp.Migrations
                     b.Navigation("AppUser");
                 });
 
+            modelBuilder.Entity("SocialMediaApp.Entities.UserLike", b =>
+                {
+                    b.HasOne("SocialMediaApp.Entities.AppUser", "SourceUser")
+                        .WithMany("LikedUsers")
+                        .HasForeignKey("SourceUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SocialMediaApp.Entities.AppUser", "TargetUser")
+                        .WithMany("LikedByUsers")
+                        .HasForeignKey("TargetUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("SourceUser");
+
+                    b.Navigation("TargetUser");
+                });
+
             modelBuilder.Entity("SocialMediaApp.Entities.AppUser", b =>
                 {
+                    b.Navigation("LikedByUsers");
+
+                    b.Navigation("LikedUsers");
+
+                    b.Navigation("MessageReceived");
+
+                    b.Navigation("MessageSent");
+
                     b.Navigation("Photos");
                 });
 #pragma warning restore 612, 618
