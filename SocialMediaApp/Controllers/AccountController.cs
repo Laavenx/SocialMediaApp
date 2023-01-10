@@ -13,31 +13,38 @@ namespace SocialMediaApp.Controllers
     public class AccountController : BaseApiController
     {
         private readonly IMapper _mapper;
-        private AppDbContext _context;
-        private ITokenService _tokenService;
-        public AccountController(AppDbContext context, ITokenService tokenService, IMapper mapper)
+        private readonly ITokenService _tokenService;
+        private readonly UserManager<AppUser> _userManager;
+        public AccountController(UserManager<AppUser> userManager, ITokenService tokenService, IMapper mapper)
         {
             _mapper = mapper;
-            _context = context;
+            _userManager = userManager;
             _tokenService = tokenService;
         }
 
         [HttpPost("register")]
         public async Task<ActionResult<UserDto>> Register(RegisterDto registerDto)
         {
-            if (await _context.Users.AnyAsync(u => u.UserName == registerDto.Username))
+            
+            if (await _userManager.Users.AnyAsync(u => u.UserName == registerDto.Username))
                 return BadRequest("Username is taken");
 
             registerDto.CreatedAt = DateTime.UtcNow;
+
             var user = _mapper.Map<AppUser>(registerDto);
 
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync();
+            var result = await _userManager.CreateAsync(user, registerDto.Password);
+
+            if (!result.Succeeded) BadRequest(result.Errors);
+
+            var roleResults = await _userManager.AddToRoleAsync(user, "Member");
+
+            if (!roleResults.Succeeded) return BadRequest(result.Errors);
 
             return new UserDto
             {
                 Username = user.UserName,
-                Token = _tokenService.createToken(user),
+                Token = await _tokenService.CreateToken(user),
                 KnownAs = user.KnownAs,
                 Gender = user.Gender,
             };
@@ -46,18 +53,20 @@ namespace SocialMediaApp.Controllers
         [HttpPost("login")]
         public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
         {
-            var user = await _context.Users
+            var user = await _userManager.Users
                 .Include(p => p.Photos)
                 .SingleOrDefaultAsync(u => u.UserName == loginDto.Username);
 
             if (user == null) return Unauthorized("Invalid username or password");
 
-            if (loginDto.Password != user.Password) return Unauthorized("Invalid username or password");
+            var result = await _userManager.CheckPasswordAsync(user, loginDto.Password);
+
+            if (!result) return Unauthorized("Invalid password");
 
             return new UserDto
             {
                 Username = user.UserName,
-                Token = _tokenService.createToken(user),
+                Token = await _tokenService.CreateToken(user),
                 PhotoUrl = user.Photos.FirstOrDefault(x => x.IsMain)?.Url,
                 KnownAs = user.KnownAs,
                 Gender = user.Gender,

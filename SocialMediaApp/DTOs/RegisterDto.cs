@@ -11,7 +11,7 @@ namespace SocialMediaApp.DTOs
         [MaxLength(32)]
         public string Username { get; set; }
         [Required]
-        [MinLength(5)]
+        [MinLength(8)]
         [MaxLength(32)]
         public string Password { get; set; }
         [Required] public string KnownAs { get; set; }

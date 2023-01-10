@@ -5,6 +5,8 @@ using Microsoft.IdentityModel.Tokens;
 using SocialMediaApp.Data;
 using SocialMediaApp.Interfaces;
 using SocialMediaApp.Services;
+using SocialMediaApp.Entities;
+using Microsoft.AspNetCore.Identity;
 
 namespace SocialMediaApp.Extensions
 {
@@ -12,6 +14,15 @@ namespace SocialMediaApp.Extensions
     {
         public static IServiceCollection AddIdentityServiceExtensions(this IServiceCollection services, IConfiguration config)
         {
+            services.AddIdentityCore<AppUser>(opt =>
+            {
+                opt.Password.RequireNonAlphanumeric = false;
+                opt.Password.RequiredLength = 8;
+            })
+                .AddRoles<AppRole>()
+                .AddRoleManager<RoleManager<AppRole>>()
+                .AddEntityFrameworkStores<AppDbContext>();
+
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {
@@ -23,6 +34,12 @@ namespace SocialMediaApp.Extensions
                         ValidateAudience = false,
                     };
                 });
+
+            services.AddAuthorization(opt =>
+            {
+                opt.AddPolicy("RequireAdminRole", policy => policy.RequireRole("Admin"));
+                opt.AddPolicy("ModeratePhotoRole", policy => policy.RequireRole("Admin", "Moderator"));
+            });
 
             return services;
         }

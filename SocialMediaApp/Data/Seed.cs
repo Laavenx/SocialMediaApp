@@ -1,5 +1,6 @@
 ﻿using System.Security.Cryptography;
 using System.Text.Json;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using SocialMediaApp.Entities;
 
@@ -7,24 +8,42 @@ namespace SocialMediaApp.Data
 {
     public class Seed
     {
-        public static async Task SeedUsers(AppDbContext context)
+        public static async Task SeedUsers(UserManager<AppUser> userManager, RoleManager<AppRole> roleManager)
         {
-            if (await context.Users.AnyAsync()) return;
+            if (await userManager.Users.AnyAsync()) return;
             var userData = await File.ReadAllTextAsync("Data/UserSeedData.json");
 
             var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
 
             var users = JsonSerializer.Deserialize<List<AppUser>>(userData);
 
-            foreach (var user in users)
+            var roles = new List<AppRole>
             {
-                user.UserName = user.UserName.ToLower();
-                user.Password = "password";
+                new AppRole { Name = "Member" },
+                new AppRole { Name = "Admin" },
+                new AppRole { Name = "Moderator" },
+            };
 
-                context.Users.Add(user);
+            foreach (var role in roles)
+            {
+                await roleManager.CreateAsync(role);
             }
 
-            await context.SaveChangesAsync();
+            foreach (var user in users)
+            {
+                user.UserName = user.UserName;
+                await userManager.CreateAsync(user, "Password5");
+                await userManager.AddToRoleAsync(user, "Member");
+            }
+
+            var admin = new AppUser
+            {
+                UserName = "admin",
+                Gender = "male"
+            };
+
+            await userManager.CreateAsync(admin, "Password5");
+            await userManager.AddToRolesAsync(admin, new[] {"Admin", "Moderator"});
         }
     }
 }

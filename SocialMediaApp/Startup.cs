@@ -1,5 +1,7 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using SocialMediaApp.Data;
+using SocialMediaApp.Entities;
 using SocialMediaApp.Extensions;
 using SocialMediaApp.Middleware;
 
@@ -48,8 +50,10 @@ namespace API
             try
             {
                 var context = services.GetRequiredService<AppDbContext>();
+                var userManager = services.GetRequiredService<UserManager<AppUser>>();
+                var roleManager = services.GetRequiredService<RoleManager<AppRole>>();
                 await context.Database.MigrateAsync();
-                await Seed.SeedUsers(context);
+                await Seed.SeedUsers(userManager, roleManager);
             }
             catch (Exception exc)
             {
