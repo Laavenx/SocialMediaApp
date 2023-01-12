@@ -1,7 +1,11 @@
-<div *ngIf="user">
-    <app-member-messages [username]="this.user"></app-member-messages>
+<div *ngIf="this.userQueryString">
+    <app-member-messages [username]="this.userQueryString"></app-member-messages>
 </div>
 
-<div *ngIf="!user">
+<div *ngIf="!this.userQueryString">
     <app-message-list></app-message-list>
+</div>
+
+<div *ngIf="(messageService.messageThread$ | async)?.length === 0">
+    No messages yet
 </div>

@@ -1,6 +1,9 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { take } from 'rxjs';
 import { Message } from 'src/app/_interfaces/message';
+import { User } from 'src/app/_interfaces/user';
+import { AccountService } from 'src/app/_services/account.service';
 import { MessageService } from 'src/app/_services/message.service';
 
 @Component({
@@ -11,28 +14,28 @@ import { MessageService } from 'src/app/_services/message.service';
 export class MemberMessagesComponent implements OnInit {
   @ViewChild('messageForm') messageForm?: NgForm
   @Input() username?: string;
-  messages: Message[] = [];
+  //messages: Message[] = [];
   messageContent = '';
 
-  constructor(private messageService: MessageService) { }
+  constructor(public messageService: MessageService) {}
 
   ngOnInit(): void {
-    this.loadMessage();
+    this.messageService.messageThread$.subscribe({
+      next: x => console.log(x)
+    }
+    )
   }
 
-  loadMessage() {
-    this.messageService.getMessageThread(this.username).subscribe({
-      next: messages => this.messages = messages
-    })
-  }
+  // loadMessages() {
+  //   this.messageService.getMessageThread(this.username).subscribe({
+  //     next: messages => this.messages = messages
+  //   })
+  // }
 
   sendMessage() {
     if (!this.username) return;
-    this.messageService.sendMessage(this.username, this.messageContent).subscribe({
-      next: message => {
-        this.messages.push(message);
-        this.messageForm?.reset();
-      }
+    this.messageService.sendMessage(this.username, this.messageContent).then(() => {
+      this.messageForm?.reset();
     })
   }
 

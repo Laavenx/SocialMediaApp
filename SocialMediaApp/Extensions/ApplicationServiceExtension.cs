@@ -4,6 +4,7 @@ using SocialMediaApp.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using SocialMediaApp.Helpers;
+using SocialMediaApp.SignalR;
 
 namespace SocialMediaApp.Extensions
 {
@@ -27,6 +28,7 @@ namespace SocialMediaApp.Extensions
             services.AddScoped<LogUserActivity>();
             services.AddScoped<ILikesRepository, LikesRepository>();
             services.AddScoped<IMessageRepository, MessageRepository>();
+            services.AddSingleton<PresenceTracker>();
 
             return services;
         }

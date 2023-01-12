@@ -1,1 +1,5 @@
 .ngx-gallery { display: inline-block; margin-bottom: 20px; }
+.is-online {
+    animation: fa-blink 1.5s linear infinite;
+    color:rgb(10, 210, 10);
+}

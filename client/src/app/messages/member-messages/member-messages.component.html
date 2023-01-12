@@ -1,5 +1,12 @@
-<div *ngFor="let message of messages">
-    {{message.content}}
+<div *ngIf="(messageService.messageThread$ | async)?.length === 0">
+    No messages yet
+</div>
+
+<div *ngIf="(messageService.messageThread$ | async)?.length > 0">
+    <div *ngFor="let message of (messageService.messageThread$ | async)">
+        {{message.content}}
+        {{ (message.dateRead !== null) ? (message.dateRead | timeago: 'dd/MM/yyyy') : " (unread)" }}
+    </div>
 </div>
 
 <div>Send Message</div>

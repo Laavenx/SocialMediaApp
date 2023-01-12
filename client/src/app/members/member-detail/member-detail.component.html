@@ -2,6 +2,9 @@
 <div>
     <ngx-gallery [options]="galleryOptions" [images]="galleryImages" class="ngx-gallery"></ngx-gallery>
 </div>
+<div [class.is-online]="(presenceService.onlineUsers$ | async)?.includes(member.userName)">
+    <i class="fa fa-user me-2"></i>
+</div>
 <p>Introduction: {{member?.introduction}}</p>
 <p>LookingFor: {{member?.lookingFor}}</p>
 <p>Interests: {{member?.interests}}</p>

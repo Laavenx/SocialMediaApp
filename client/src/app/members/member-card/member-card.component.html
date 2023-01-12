@@ -1,3 +1,6 @@
 <p *ngIf="member"><img src="{{member.photoUrl}} " alt="{{member.knownAs}}"></p>
+<div [class.is-online]="(presenceService.onlineUsers$ | async)?.includes(member.userName)">
+    <i class="fa fa-user me-2"></i>
+</div>
 <button routerLink="/members/{{member.userName}}">{{member.userName}}</button>
 <button (click)="addLike(member)">AddLike</button>
