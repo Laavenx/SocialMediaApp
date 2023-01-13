@@ -83,9 +83,7 @@ namespace SocialMediaApp.Data
 
         public async Task<IEnumerable<MessageDto>> GetMessageThread(string currentUserName, string recipientUserName)
         {
-            var messages = await _context.Messages
-                .Include(u => u.Sender).ThenInclude(p => p.Photos)
-                .Include(u => u.Recipient).ThenInclude(p => p.Photos)
+            var messagesQuery = _context.Messages
                 .Where(
                     m => m.RecipientUsername == currentUserName && m.RecipientDeleted == false &&
                     m.SenderUsername == recipientUserName ||
@@ -93,10 +91,10 @@ namespace SocialMediaApp.Data
                     m.SenderUsername == currentUserName
                 )
                 .OrderBy(m => m.MessageSent)
-                .ToListAsync();
+                .AsQueryable();
 
-            var unreadMessage = messages.Where(m => m.DateRead == null
-            && m.RecipientUsername == currentUserName).ToList();
+            var unreadMessage = messagesQuery.Where(m => m.DateRead == null
+                && m.RecipientUsername == currentUserName).ToList();
             
             if (unreadMessage.Any()) 
             {
@@ -104,21 +102,14 @@ namespace SocialMediaApp.Data
                 {   
                     message.DateRead = DateTime.UtcNow;
                 }
-
-                await _context.SaveChangesAsync();
             }
 
-            return _mapper.Map<IEnumerable<MessageDto>>(messages);
+            return await messagesQuery.ProjectTo<MessageDto>(_mapper.ConfigurationProvider).ToListAsync();
         }
 
         public void RemoveConnection(Connection connection)
         {
             _context.Connections.Remove(connection);
-        }
-
-        public async Task<bool> SaveAllAsync()
-        {
-            return await _context.SaveChangesAsync() > 0;
         }
     }
 }
