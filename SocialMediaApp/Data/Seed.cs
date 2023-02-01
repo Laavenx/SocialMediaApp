@@ -31,6 +31,7 @@ namespace SocialMediaApp.Data
 
             foreach (var user in users)
             {
+                user.UUID = Guid.NewGuid().ToString();
                 user.UserName = user.UserName;
                 await userManager.CreateAsync(user, "Password5");
                 await userManager.AddToRoleAsync(user, "Member");
@@ -39,8 +40,8 @@ namespace SocialMediaApp.Data
             var admin = new AppUser
             {
                 UserName = "admin",
-                Gender = "male"
-            };
+                UUID = Guid.NewGuid().ToString()
+        };
 
             await userManager.CreateAsync(admin, "Password5");
             await userManager.AddToRolesAsync(admin, new[] {"Admin", "Moderator"});

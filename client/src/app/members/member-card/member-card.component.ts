@@ -1,4 +1,5 @@
-import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';
+import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Member } from 'src/app/_interfaces/member';
 import { MembersService } from 'src/app/_services/members.service';
@@ -11,17 +12,35 @@ import { PresenceService } from 'src/app/_services/presence.service';
 })
 export class MemberCardComponent implements OnInit {
   @Input() member: Member | undefined;
-  constructor(private memberSerivce: MembersService, private toastr: ToastrService,
-    public presenceService: PresenceService) { }
+  @Output() unFollow = new EventEmitter();
+
+  constructor(private membersService: MembersService, private toastr: ToastrService,
+    public presenceService: PresenceService, private router: Router) { }
 
   ngOnInit(): void {
   }
 
-  addLike(member: Member) {
-    this.memberSerivce.addLike(member.userName).subscribe({ 
-      next: () => this.toastr.success('you have liked ' + member.knownAs),
+  addFollow(member: Member) {
+    this.membersService.addFollow(member.id).subscribe({ 
+      next: () => {
+        if (!this.member.isLiked) {
+          this.toastr.success('You followed ' + member.knownAs)
+        } else {
+          this.toastr.warning('You unfollowed ' + member.knownAs)
+        }
+        this.member.isLiked = !this.member.isLiked
+        this.unFollow.emit();
+      },
       error: (err) => this.toastr.error(err)
     })
+  }
+
+  sendMessage(member: Member) {
+    this.router.navigateByUrl(
+      this.router.createUrlTree(
+        ['/messages'], {queryParams: { user: this.member.uuid }}
+      )
+    );
   }
 
 }

@@ -1,5 +1,6 @@
 export interface User {
-    username: string;
+    id: number;
+    uuid: string;
     token: string;
     photoUrl: string;
     knownAs: string;

@@ -1,0 +1,19 @@
+@import 'src/styles/variables.scss';
+
+.pagination {
+    display: flex;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    button {
+        margin-right: 5px;
+    }
+    width: 100%;
+}
+
+.results {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgb(131, 126, 126);
+    font-size: 15px;
+}

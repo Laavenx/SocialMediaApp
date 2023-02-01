@@ -30,12 +30,12 @@ export class MemberEditComponent implements OnInit {
    }
 
   ngOnInit(): void {
-    this.loadMemebr();
+    this.loadMemeber();
   }
 
-  loadMemebr() {
+  loadMemeber() {
     if (!this.user) return;
-    this.membersService.getMember(this.user.username).subscribe({
+    this.membersService.getMember(this.user.uuid).subscribe({
       next: member => this.member = member,
     })
   }

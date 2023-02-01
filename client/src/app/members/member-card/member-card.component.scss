@@ -1,3 +1,5 @@
+@import 'src/styles/variables.scss';
+
 @keyframes fa-blink {
     0% {opacity: 1;}
     100% {opacity: 0.4;}
@@ -6,4 +8,67 @@
 .is-online {
     animation: fa-blink 1.5s linear infinite;
     color:rgb(10, 210, 10);
+}
+
+.img-container, img {
+    height: 125px;
+    width: 125px;
+}
+
+img {
+    border: solid $border-color 1px;
+    border-radius: 5px;
+}
+
+.name {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 3px 0px 3px 0px;
+}
+
+.online-friend {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    a, div {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 35px;
+        border: solid $border-color 1px;
+        border-radius: 5px;
+    }
+
+    a:hover {
+        cursor: pointer;
+        transition: 0.3s;
+        background-color:rgba(52, 129, 197, 0.477);
+    }
+
+    a {
+        margin-left: 3px;
+    }
+}
+
+.card {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    padding-left: 15px;
+    padding-right: 15px;
+    border: solid $border-color 1px;
+    background-color: $grey-bg;
+    margin: 8px;
+}
+
+.member-card {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
 }

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -14,7 +14,7 @@ export class RegisterComponent implements OnInit {
   registerForm: FormGroup = new FormGroup({});
   validationErrors: string[] | undefined;
 
-  constructor(private accountService: AccountService, private toastr: ToastrService, private fb: FormBuilder,
+  constructor(private accountService: AccountService, private fb: FormBuilder,
     private router: Router) { }
 
   ngOnInit(): void {
@@ -35,15 +35,16 @@ export class RegisterComponent implements OnInit {
   initializeForm() {
     this.registerForm = this.fb.group({
       gender: ['', [Validators.required,]],
-      knownAs: ['', [Validators.required,]],
-      dateOfBirth: ['', [Validators.required, this.date]],
-      city: ['', [Validators.required,]],
-      country: ['', [Validators.required,]],
+      knownAs: ['', [Validators.required,
+      Validators.maxLength(16)]],
+      city: ['', [Validators.required,
+      Validators.maxLength(128)]],
+      country: ['', [Validators.required,
+      Validators.maxLength(128)]],
       username: ['', [Validators.required,
-      Validators.minLength(5),
-      Validators.maxLength(32)]],
+      Validators.maxLength(16)]],
       password: ['', [Validators.required,
-      Validators.minLength(5),
+      Validators.minLength(8),
       Validators.maxLength(32)]],
       confirmPassword: ['', [Validators.required,
       this.matchValues('password')]]
@@ -71,5 +72,4 @@ export class RegisterComponent implements OnInit {
   cancel() {
     this.cancelRegiser.emit(false);
   }
-
 }

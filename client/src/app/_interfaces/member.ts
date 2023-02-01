@@ -2,11 +2,10 @@ import { Photo } from "./photo";
 
 export interface Member {
     id: number;
-    userName: string;
+    uuid: string;
     photoUrl: string;
     createdAt: Date;
     lastActive: Date;
-    age: number;
     introduction: string;
     gender: string;
     city: string;
@@ -14,5 +13,6 @@ export interface Member {
     lookingFor: string;
     interests: string;
     country: string;
+    isLiked: boolean;
     photos: Photo[];
 }

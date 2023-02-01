@@ -1,0 +1,68 @@
+@import '../home/home.component.scss';
+
+.register-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 80%;
+    width: 450px;
+    margin-top: 40px;
+    margin-bottom: 50px;
+    padding-top: 5px;
+    padding-bottom: 40px;
+    background-color: white;
+
+    button[type="submit"] {
+        color: white;
+        background-color: rgb(34, 162, 62);
+    }
+
+    button {
+        height: 34px;
+        margin: 2.5px 0px 2.5px 0px;
+        border: solid rgb(215, 206, 206) 1px;
+        width: 80%;
+    }
+}
+
+.gender-input {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 80%;
+    margin: 2.5px 0px 2.5px 0px;
+    border: solid rgb(215, 206, 206) 1px;
+
+    label {
+        display: flex;
+        justify-content: center;
+    }
+
+    div {
+        display: flex;
+        justify-content: space-between;
+        width: 85px;
+
+        input {
+            height: 13px;
+            width: 13px;
+            border-radius: 50%;
+            appearance: none;
+            background: rgba(132, 158, 137, 0.507);
+            border: 0px solid black;
+        }
+
+        input:checked {
+            background: rgb(34, 162, 62);
+        }
+    }
+}
+
+.cancel {
+    background-color: red;
+}
+
+app-text-input {
+    width: 80%;
+}

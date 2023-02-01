@@ -1,0 +1,54 @@
+.login-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 90%;
+    width: 450px;
+    margin-top: 40px;
+    margin-left: 0;
+    margin-right: 0;
+    padding-top: 5px;
+    padding-bottom: 40px;
+    background-color: white;
+
+    .sign-in-external {
+        margin-bottom: 15px;
+
+        button {
+            background-color: orangered;
+        }
+    }
+
+    button[type="submit"] {
+        background-color: rgb(34, 162, 62);
+    }
+
+    .sign-in-external {
+        width: 80%;
+
+        button {
+            width: 100%;
+        }
+    }
+}
+
+button {
+    color: white;
+}
+
+.register {
+    background-color: rgb(34, 162, 62);
+}
+
+input,
+button {
+    height: 34px;
+    margin: 2.5px 0px 2.5px 0px;
+    width: 80%;
+}
+
+app-register {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

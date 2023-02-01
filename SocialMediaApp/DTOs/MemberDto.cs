@@ -8,6 +8,8 @@ namespace SocialMediaApp.DTOs
         public int Id { get; set; }
         public string UserName { get; set; }
         public string PhotoUrl { get; set; }
+        public string UUID { get; set; }
+        public bool IsLiked { get; set; } = false;
         public DateTime CreatedAt { get; set; }
         public DateTime LastActive { get; set; }
         public object Age { get; internal set; }

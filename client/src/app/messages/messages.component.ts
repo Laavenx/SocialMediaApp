@@ -32,7 +32,7 @@ export class MessagesComponent implements OnInit {
         this.userQueryString = params.user;
       });
     
-    if (this.user) {
+    if (this.user && this.userQueryString) {
       this.messageService.createHubConnection(this.user, this.userQueryString);
     } else {
       this.messageService.stopHubConnection();

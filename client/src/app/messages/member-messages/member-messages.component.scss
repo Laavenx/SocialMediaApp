@@ -1,0 +1,64 @@
+@import 'src/styles/variables.scss';
+
+form {
+    padding: 0px 4px 0px 4px;
+    border: 0;
+    border-top: 1px solid $border-color;
+    border-radius: 0;
+
+    select, button {
+        margin: 8px 4px 8px 4px;
+    }
+}
+
+.message-container{
+    margin-top: 20px;
+    width: 800px;
+    border: 1px solid $border-color;
+    border-radius: 10px;
+}
+
+.message-wrap {
+    display: flex;
+    padding: 14px 14px 14px 14px;
+    flex-direction: row;
+}
+
+.message {
+    padding: 5px 10px 5px 10px;
+    border-radius: 5.5px;
+    color:white;
+    display: flex;
+    flex-direction: column;
+}
+
+.message-received {
+    background-color: rgb(19, 131, 211);
+}
+
+.message-sent {
+    background-color: rgb(20, 166, 20);
+    margin-left: auto;
+}
+
+.time-text {
+    font-size: 0.7rem;
+    color: rgb(210, 208, 208);
+}
+
+p {
+    margin: 0;
+}
+
+@media (max-width: 850px) {
+    .message-container{
+        width: 600px;
+    }
+}
+
+@media (max-width: 600px) {
+    .message-container{
+        width: 450px;
+    }
+}
+  

@@ -1,12 +1,42 @@
-<h1>{{member?.knownAs}}</h1>
-<div>
-    <ngx-gallery [options]="galleryOptions" [images]="galleryImages" class="ngx-gallery"></ngx-gallery>
+<div *ngIf="this.member" class="container">
+    <div class="detail-card">
+        <div class="photos">
+            <img class="main-photo" src="{{member.photoUrl || './assets/user.png'}}" alt="{{member.knownAs}}">
+            <div *ngFor="let photo of member.photos">
+                <img src="{{photo.url}}" alt="photo of user" class="photo" *ngIf="!photo.isMain">
+            </div>
+        </div>
+        <div class="user-info">
+            <a *ngIf="!member.isLiked" (click)="addFollow(member)">
+                <i class="fa fa-user-plus"></i>
+            </a>
+            <a *ngIf="member.isLiked" (click)="addFollow(member)">
+                <i class="fa fa-user-minus"></i>
+            </a>
+            <a (click)="sendMessage(member)">
+                <i class="fa fa-solid fa-envelope"></i>
+            </a>
+            <div [class.is-online]="(presenceService.onlineUsers$ | async)?.includes(member.knownAs)" class="online">
+                <i class="fa fa-user me-2"></i>
+                <div *ngIf="(presenceService.onlineUsers$ | async)?.includes(member.knownAs)">
+                    <p>User is online</p>
+                </div>
+                <div *ngIf="!(presenceService.onlineUsers$ | async)?.includes(member.knownAs)">
+                    <p>User is offline</p>
+                </div>
+            </div>
+        </div>
+        <div class="block">
+            <h3>Description:</h3>
+            <p>{{member?.introduction}}</p>
+        </div>
+        <div class="block">
+            <h3>Account created at:</h3>
+            <p>{{member?.createdAt | date:'longDate'}}</p>
+        </div>
+        <div class="block">
+            <h3>Last active:</h3>
+            <p>{{member?.lastActive | timeago}}</p>
+        </div>
+    </div>
 </div>
-<div [class.is-online]="(presenceService.onlineUsers$ | async)?.includes(member.userName)">
-    <i class="fa fa-user me-2"></i>
-</div>
-<p>Introduction: {{member?.introduction}}</p>
-<p>LookingFor: {{member?.lookingFor}}</p>
-<p>Interests: {{member?.interests}}</p>
-<p>Interests: {{member?.createdAt | date}}</p>
-<p>Last active: {{member?.lastActive | timeago}}</p>

@@ -150,9 +150,6 @@ namespace SocialMediaApp.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime>("DateOfBirth")
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("Email")
                         .HasMaxLength(256)
                         .HasColumnType("TEXT");
@@ -161,9 +158,6 @@ namespace SocialMediaApp.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Gender")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Interests")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Introduction")
@@ -179,9 +173,6 @@ namespace SocialMediaApp.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("LookingFor")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("NormalizedEmail")
@@ -206,6 +197,10 @@ namespace SocialMediaApp.Migrations
 
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("UUID")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("UserName")
                         .HasMaxLength(256)

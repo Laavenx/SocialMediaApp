@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { NgxGalleryAnimation, NgxGalleryImage, NgxGalleryOptions } from '@kolkov/ngx-gallery';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { Member } from 'src/app/_interfaces/member';
 import { MembersService } from 'src/app/_services/members.service';
 import { PresenceService } from 'src/app/_services/presence.service';
@@ -12,47 +12,51 @@ import { PresenceService } from 'src/app/_services/presence.service';
 })
 export class MemberDetailComponent implements OnInit {
   member: Member | undefined;
-  galleryOptions: NgxGalleryOptions[] = [];
-  galleryImages: NgxGalleryImage[] = [];
 
   constructor(private membersService: MembersService, private route: ActivatedRoute,
-    public presenceService: PresenceService ) { }
+    public presenceService: PresenceService, private toastr: ToastrService, private router: Router ) { }
 
   ngOnInit(): void {
     this.loadMember();
-
-    this.galleryOptions = [
-      {
-        width: '400px',
-        height: '500px',
-        imagePercent: 100,
-        thumbnailsColumns: 4,
-        imageAnimation: NgxGalleryAnimation.Fade,
-        preview: false
-      }
-    ]
+    this.getImages();
   }
 
-  getImages(): NgxGalleryImage[] {
+  getImages() {
     if (!this.member) return;
     const imageUrls = [];
     for (const photo of this.member.photos) {
-      imageUrls.push({
-        small: photo.url,
-        medium: photo.url,
-        big: photo.url
-      })
+      imageUrls.push(photo.url);
     }
-
     return imageUrls;
   }
 
+  addFollow(member: Member) {
+    this.membersService.addFollow(member.id).subscribe({ 
+      next: () => {
+        if (!this.member.isLiked) {
+          this.toastr.success('You followed ' + member.knownAs)
+        } else {
+          this.toastr.warning('You unfollowed ' + member.knownAs)
+        }
+        this.member.isLiked = !this.member.isLiked
+      },
+      error: (err) => this.toastr.error(err)
+    })
+  }
+
+  sendMessage(member: Member) {
+    this.router.navigateByUrl(
+      this.router.createUrlTree(
+        ['/messages'], {queryParams: { user: this.member.uuid }}
+      )
+    );
+  }
+
   loadMember() {
-    const username = this.route.snapshot.paramMap.get('username');
-    this.membersService.getMember(username).subscribe({
+    const uuid = this.route.snapshot.paramMap.get('uuid');
+    this.membersService.getMember(uuid).subscribe({
       next: (member) => {
         this.member = member;
-        this.galleryImages = this.getImages();
       }
     })
   }

@@ -14,10 +14,13 @@ namespace SocialMediaApp.Extensions
     {
         public static IServiceCollection AddIdentityServiceExtensions(this IServiceCollection services, IConfiguration config)
         {
-            services.AddIdentityCore<AppUser>(opt =>
+            services.AddIdentityCore<AppUser>(options =>
             {
-                opt.Password.RequireNonAlphanumeric = false;
-                opt.Password.RequiredLength = 8;
+                options.Password.RequiredLength = 8;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireDigit = false;
+                options.Password.RequireNonAlphanumeric = false;
             })
                 .AddRoles<AppRole>()
                 .AddRoleManager<RoleManager<AppRole>>()

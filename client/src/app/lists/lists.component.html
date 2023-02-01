@@ -1,14 +1,14 @@
-<div>
-    <h2>{{predicate === 'liked' ? 'Member I like' : 'Members who like me'}}</h2>
-</div>
-
-<div>
-    <select name="liked" [(ngModel)]="predicate" (ngModelChange)="loadLikes()">
-        <option value="liked">Members i like</option>
-        <option value="likedBy">Member who like me</option>
-    </select>
-</div>
-
-<div *ngFor="let member of members">
-    <app-member-card [member]="member"></app-member-card>
+<div class="container">
+    <form>
+        <select name="liked" [(ngModel)]="predicate" (ngModelChange)="loadLikes()">
+            <option value="liked">Followed</option>
+            <option value="likedBy">Members who follow me</option>
+        </select>
+    </form>
+    
+    <ul class="member">
+        <li *ngFor="let member of members">
+            <app-member-card [member]="member" (unFollow)="loadLikes()"></app-member-card>
+        </li>
+    </ul>
 </div>

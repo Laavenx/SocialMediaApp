@@ -1,24 +1,21 @@
-<form #form="ngForm" (ngSubmit)="loadMembers()" autocomplete="off">
-    <input type="number" name="minAge" [(ngModel)]="userParams.minAge">
-    <input type="number" name="maxAge" [(ngModel)]="userParams.maxAge">
-    <select name="gender" [(ngModel)]="userParams.gender">
-        <option *ngFor="let gender of genderList" [value]="gender.value">
-            {{gender.display}}
-        </option>
-    </select>
-
-    <select name="gender" [(ngModel)]="userParams.orderBy">
-        <option value="lastActive">Last Active</option>
-        <option value="createdAt">createdAt</option>
-    </select>
-
-    <button type="submit">Apply filters</button>
-    <button (click)="resetFilters()" type="submit">Reset</button>
-</form>
-
-<p *ngFor="let member of members">
-    <app-member-card [member]="member"></app-member-card>
-</p>
-
-<div>{{pagination?.currentPage}}</div>
-<div>{{pagination?.totalPages}}</div>
+<div class="container">
+    <div class="member-container">
+        <form #form="ngForm" (ngSubmit)="loadMembers()" autocomplete="off">
+            <select name="gender" [(ngModel)]="userParams.orderBy">
+                <option value="lastActive">Last Active</option>
+                <option value="createdAt">createdAt</option>
+            </select>
+    
+            <button type="submit">Apply filters</button>
+            <button (click)="resetFilters()" type="submit">Reset</button>
+        </form>
+    
+        <app-pagination [pagination]="pagination" (page)="pageChanged($event)"></app-pagination>
+        <ul class="member-list-container">
+            <li *ngFor="let member of members">
+                <app-member-card [member]="member"></app-member-card>
+            </li>
+        </ul>
+        <app-pagination [pagination]="pagination" (page)="pageChanged($event)"></app-pagination>
+    </div>
+</div>

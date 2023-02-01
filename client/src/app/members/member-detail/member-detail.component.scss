@@ -1,5 +1,97 @@
-.ngx-gallery { display: inline-block; margin-bottom: 20px; }
+@import 'src/styles/variables.scss';
+
 .is-online {
     animation: fa-blink 1.5s linear infinite;
     color:rgb(10, 210, 10);
+}
+
+.main-photo {
+    width: 300px;
+    height: 300px;
+    border-radius: 5px;
+}
+
+.photos {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 300px;
+}
+
+.detail-card {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 400px;
+    border: solid $border-color 1px;
+    border-radius: 5px;
+    padding: 49px 20px 30px 20px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    background-color: $grey-bg;
+}
+
+.online {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px 6px 5px 6px;
+    height: 35px;
+    border: solid $border-color 1px;
+    border-radius: 5px;
+    margin-top: 14px;
+    margin-bottom: 12px;
+
+    p {
+        margin: 0px 0px 0px 10px;
+    }
+}
+
+p {
+    margin: 0px 0px 0px 0px;
+    width: 100%;
+}
+
+h3 {
+    font-weight: bold;
+    margin: 0px 0px 5px 0px;
+    width: 100%;
+}
+
+.block {
+    border: solid $border-color 1px;
+    border-radius: 5px;
+    padding: 5px 8px 5px 8px;
+    margin-bottom: 10px;
+    width: 100%;
+    background-color: white;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    a {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 35px;
+        border: solid $border-color 1px;
+        border-radius: 5px;
+    }
+
+    a:hover {
+        cursor: pointer;
+        transition: 0.3s;
+        background-color:rgba(52, 129, 197, 0.477);
+    }
+
+    a {
+        margin-right: 3px;
+    }
 }

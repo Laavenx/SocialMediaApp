@@ -13,7 +13,6 @@ import { MembersService } from 'src/app/_services/members.service';
   styleUrls: ['./member-list.component.scss']
 })
 export class MemberListComponent implements OnInit {
-  // members$: Observable<Member[]> | undefined;
   members: Member[] = [];
   pagination: Pagination | undefined;
   userParams: UserParams | undefined;
@@ -24,7 +23,6 @@ export class MemberListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // this.members$ = this.memberService.getMembers();
     this.loadMembers();
   }
 
@@ -44,6 +42,13 @@ export class MemberListComponent implements OnInit {
           }
         }
       })
+    }
+  }
+
+  pageChanged(event: any) {
+    if (this.userParams && this.userParams?.pageNumber !== event.page){
+      this.userParams.pageNumber = event;
+      this.loadMembers();
     }
   }
 }

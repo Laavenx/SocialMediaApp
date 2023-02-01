@@ -1,23 +1,18 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, UrlTree } from '@angular/router';
+import { CanActivate, Router, UrlTree } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { map, Observable } from 'rxjs';
-import { AccountService } from '../_services/account.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthGuard implements CanActivate {
-  constructor(private accountService: AccountService, private toastr: ToastrService) { }
+  constructor(private router: Router, private toastr: ToastrService) { }
 
-  canActivate(): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    return this.accountService.currentUser$.pipe(
-      map(user => {
-        if (user) return true;
-        this.toastr.error("Unauthorized");
-        return false;
-      })
-    )
+  canActivate(): boolean {
+    if (localStorage.getItem('user') !== null) return true;
+    else {
+      this.toastr.warning("You must sign-in to access this feature");
+      this.router.navigateByUrl('/member/login');
+    }
   }
-
 }

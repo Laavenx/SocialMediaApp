@@ -1,1 +1,108 @@
-/* You can add global styles to this file, and also import other style files */
+@import 'src/styles/variables.scss';
+
+html {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+}
+
+body {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    background-color: #f8f9fa;
+}
+
+app-root {
+    min-height: 100vh;
+    width: 100%;
+    margin: 0;
+    display: flex;
+    flex-flow: column;
+}
+
+app-root > .ng-star-inserted {
+    flex-grow: 1;
+}
+
+a {
+    display: flex;
+    align-items: center;
+}
+
+* {
+    box-sizing: border-box;
+    font-family: 'Trebuchet MS', sans-serif;
+    font-size: 17px;
+    font-weight: 200;
+}
+
+h3 {
+    font-size: 20px;
+    font-weight: 200;
+}
+
+h2 {
+    font-size: 35px;
+    font-weight: 400;
+}
+
+h1 {
+    font-size: 60px;
+    font-weight: 400;
+}
+
+form {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: solid $border-color 1px;
+    border-radius: 5px;
+}
+
+input {
+    padding-left: 8px;
+    padding-right: 8px;
+}
+
+input:focus, select:focus {
+    animation: animateColorTransition 0.2s forwards;
+    animation-timing-function: ease-in-out;
+}
+
+@keyframes animateColorTransition {
+    from {
+        outline: 3px solid rgba(141, 227, 255, 0);
+    }
+
+    to {
+        outline: 3px solid rgba(141, 227, 255, 0.67);
+    }
+}
+
+button, select {
+    background-color: #FDB746;
+    border: solid rgba(255, 0, 0, 0) 1px;
+    border-radius: 4px;
+    padding: 2px 4px 2px 4px;
+}
+
+button:disabled,
+button[disabled]{
+  background-color: #cccccc;
+  color: #666666;
+}
+
+button:hover {
+    cursor: pointer;
+    filter: brightness(85%);
+    transition: 0.3s;
+}
+
+.container {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}

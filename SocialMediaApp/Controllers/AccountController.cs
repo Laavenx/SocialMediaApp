@@ -15,8 +15,11 @@ namespace SocialMediaApp.Controllers
         private readonly IMapper _mapper;
         private readonly ITokenService _tokenService;
         private readonly UserManager<AppUser> _userManager;
-        public AccountController(UserManager<AppUser> userManager, ITokenService tokenService, IMapper mapper)
+        private readonly IUnitOfWork _uow;
+        public AccountController(UserManager<AppUser> userManager, ITokenService tokenService,
+            IMapper mapper, IUnitOfWork uow)
         {
+            _uow = uow;
             _mapper = mapper;
             _userManager = userManager;
             _tokenService = tokenService;
@@ -33,6 +36,8 @@ namespace SocialMediaApp.Controllers
 
             var user = _mapper.Map<AppUser>(registerDto);
 
+            user.UUID = user.UUID = Guid.NewGuid().ToString();
+
             var result = await _userManager.CreateAsync(user, registerDto.Password);
 
             if (!result.Succeeded) BadRequest(result.Errors);
@@ -41,13 +46,20 @@ namespace SocialMediaApp.Controllers
 
             if (!roleResults.Succeeded) return BadRequest(result.Errors);
 
-            return new UserDto
-            {
-                Username = user.UserName,
-                Token = await _tokenService.CreateToken(user),
-                KnownAs = user.KnownAs,
-                Gender = user.Gender,
-            };
+            var userUpdate = await _uow.UserRepository.GetUserByUsernameAsync(user.UserName);
+            userUpdate.LastActive = DateTime.UtcNow;
+            if (await _uow.Complete()) {
+                return new UserDto
+                {
+                    Token = await _tokenService.CreateToken(user),
+                    KnownAs = user.KnownAs,
+                    Gender = user.Gender,
+                    UUID = user.UUID
+                };
+            }
+
+            return BadRequest("Problem registering");
+
         }
 
         [HttpPost("login")]
@@ -61,16 +73,22 @@ namespace SocialMediaApp.Controllers
 
             var result = await _userManager.CheckPasswordAsync(user, loginDto.Password);
 
-            if (!result) return Unauthorized("Invalid password");
+            if (!result) return Unauthorized("Invalid username or password");
 
-            return new UserDto
+            user.LastActive = DateTime.UtcNow;
+            if (await _uow.Complete())
             {
-                Username = user.UserName,
-                Token = await _tokenService.CreateToken(user),
-                PhotoUrl = user.Photos.FirstOrDefault(x => x.IsMain)?.Url,
-                KnownAs = user.KnownAs,
-                Gender = user.Gender,
-            };
+                return new UserDto
+                {
+                    Token = await _tokenService.CreateToken(user),
+                    PhotoUrl = user.Photos.FirstOrDefault(x => x.IsMain)?.Url,
+                    KnownAs = user.KnownAs,
+                    Gender = user.Gender,
+                    UUID = user.UUID
+                };
+            }
+
+            return BadRequest("Problem logging-in");
         }
     }
 }

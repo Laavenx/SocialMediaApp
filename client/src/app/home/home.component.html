@@ -1,3 +1,10 @@
-<button (click)="registerToggle()">Register</button>
-
-<app-register *ngIf="registerMode" (cancelRegiser)="cancelRegisterMode($event)"></app-register>
+<section>
+    <img src="{{'./assets/cycling.webp'}}">
+    <article>
+        <h1>Meetup and connect with cyclists near you.</h1>
+        <span>
+            <a routerLink="/member/login">Join now!</a><br>
+            <span class="description">A community of cyclists, people who are supporting eachother to break their limits, and to become stronger together!</span>
+        </span>
+    </article>
+</section>

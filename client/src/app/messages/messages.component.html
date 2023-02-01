@@ -1,7 +1,9 @@
-<div *ngIf="this.userQueryString">
-    <app-member-messages [username]="this.userQueryString"></app-member-messages>
-</div>
-
-<div *ngIf="!this.userQueryString">
-    <app-message-list></app-message-list>
+<div class="container">
+    <div *ngIf="this.userQueryString">
+        <app-member-messages [uuid]="this.userQueryString"></app-member-messages>
+    </div>
+    
+    <div *ngIf="!this.userQueryString">
+        <app-message-list></app-message-list>
+    </div>
 </div>

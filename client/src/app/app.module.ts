@@ -24,13 +24,14 @@ import { MemberEditComponent } from './members/member-edit/member-edit.component
 import { LoadingInterceptor } from './_interceptors/loading.interceptor';
 import { PhotoEditorComponent } from './members/photo-editor/photo-editor.component';
 import { TextInputComponent } from './_forms/text-input/text-input.component';
-import { TimeagoModule } from 'ngx-timeago';
 import { MemberMessagesComponent } from './messages/member-messages/member-messages.component';
 import { MessageListComponent } from './messages/message-list/message-list.component';
 import { AdminPanelComponent } from './admin/admin-panel/admin-panel.component';
 import { HasRoleDirective } from './_directives/has-role.directive';
 import { UserManagementComponent } from './admin/user-management/user-management.component';
 import { PhotoManagementComponent } from './admin/photo-management/photo-management.component';
+import { LoginComponent } from './members/login/login.component';
+import { PaginationComponent } from './pagination/pagination.component';
 
 @NgModule({
   declarations: [
@@ -55,6 +56,8 @@ import { PhotoManagementComponent } from './admin/photo-management/photo-managem
     HasRoleDirective,
     UserManagementComponent,
     PhotoManagementComponent,
+    LoginComponent,
+    PaginationComponent,
   ],
   imports: [
     BrowserModule,

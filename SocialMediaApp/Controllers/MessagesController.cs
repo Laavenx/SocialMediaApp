@@ -24,11 +24,11 @@ namespace SocialMediaApp.Controllers
         {
             var username = User.GetUsername();
 
-            if (username == createMessageDto.recipientUsername.ToLower())
+            var recipient = await _uow.UserRepository.GetUserByUUIDAsync(createMessageDto.UUID);
+            if (username == recipient.UserName)
                 return BadRequest("You can't send messages to yourself");
 
             var sender = await _uow.UserRepository.GetUserByUsernameAsync(username);
-            var recipient = await _uow.UserRepository.GetUserByUsernameAsync(createMessageDto.recipientUsername);
 
             if (recipient== null) return NotFound();
 

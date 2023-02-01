@@ -20,10 +20,10 @@ namespace SocialMediaApp.Data
             _mapper = mapper;
         }
 
-        public async Task<MemberDto> GetMemberAsync(string username)
+        public async Task<MemberDto> GetMemberAsync(string uuid)
         {
             return await _context.Users
-                .Where(x => x.UserName == username)
+                .Where(x => x.UUID == uuid)
                 .ProjectTo<MemberDto>(_mapper.ConfigurationProvider)
                 .SingleOrDefaultAsync();
         }
@@ -33,16 +33,10 @@ namespace SocialMediaApp.Data
             var query = _context.Users.AsQueryable();
 
             query = query.Where(u => u.UserName != userParams.CurrentUsername);
-            query = query.Where(u => u.Gender == userParams.Gender);
-
-            var minDob = DateTime.Today.AddYears(-userParams.MaxAge - 1);
-            var maxDob = DateTime.Today.AddYears(-userParams.MinAge);
-
-            query = query.Where(u => u.DateOfBirth >= minDob && u.DateOfBirth <= maxDob);
 
             query = userParams.OrderBy switch
             {
-                "created" => query.OrderByDescending(u => u.CreatedAt),
+                "createdAt" => query.OrderByDescending(u => u.CreatedAt),
                 _ => query.OrderByDescending(u => u.LastActive),
             };
 
@@ -62,6 +56,12 @@ namespace SocialMediaApp.Data
             return await _context.Users
                 .Include(p => p.Photos)
                 .SingleOrDefaultAsync(x => x.UserName == username);
+        }
+
+        public async Task<AppUser> GetUserByUUIDAsync(string uuid)
+        {
+            return await _context.Users
+                .SingleOrDefaultAsync(x => x.UUID == uuid);
         }
 
         public async Task<string> GetUserGender(string username)

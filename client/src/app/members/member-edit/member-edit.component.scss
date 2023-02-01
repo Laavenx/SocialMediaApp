@@ -1,0 +1,30 @@
+@import 'src/styles/variables.scss';
+
+form {
+    width: 280px;
+    background-color: $grey-bg;
+
+    flex-direction: column;
+    padding: 12px;
+
+    textarea {
+        resize:vertical;    
+    }
+    button {
+        margin-top: 12px;
+    }
+
+    label {
+        margin-top: 5px;
+    }
+}
+
+app-photo-editor {
+    background-color: $grey-bg;
+    width: 320px;
+    border: solid $border-color 1px;
+    border-radius: 5px;
+    padding: 18px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}

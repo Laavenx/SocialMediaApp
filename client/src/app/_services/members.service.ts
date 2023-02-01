@@ -22,7 +22,7 @@ export class MembersService {
     this.accountService.currentUser$.pipe(take(1)).subscribe({
       next: user => {
         if (user) {
-          this.userParams = new UserParams(user);
+          this.userParams = new UserParams;
           this.user = user;
         }
       }
@@ -39,7 +39,7 @@ export class MembersService {
 
   resetUserParams() {
     if (this.user) {
-      this.userParams = new UserParams(this.user);
+      this.userParams = new UserParams;
       return this.userParams;
     }
   }
@@ -51,9 +51,6 @@ export class MembersService {
 
     let params = getPaginationHeaders(userParams.pageNumber, userParams.pageSize);
 
-    params = params.append('minAge', userParams.minAge);
-    params = params.append('maxAge', userParams.maxAge);
-    params = params.append('gender', userParams.gender);
     params = params.append('orderBy', userParams.orderBy);
 
     return getPaginatedResult<Member[]>(this.baseUrl + 'users', params, this.http).pipe(
@@ -64,14 +61,14 @@ export class MembersService {
     )
   }
 
-  getMember(username: string) {
+  getMember(uuid: string) {
     const member = [...this.memberCache.values()]
       .reduce((arr, elem) => arr.concat(elem.result), [])
-      .find((member: Member) => member.userName === username);
+      .find((member: Member) => member.uuid === uuid);
 
     if (member) return of(member);
 
-    return this.http.get<Member>(this.baseUrl + 'users/' + username);
+    return this.http.get<Member>(this.baseUrl + 'users/' + uuid);
   }
 
   updateMember(member: Member) {
@@ -91,8 +88,8 @@ export class MembersService {
     return this.http.delete(this.baseUrl + 'users/delete-photo/' + photoId);
   }
 
-  addLike(username: string) {
-    return this.http.post(this.baseUrl + 'likes/' + username, {});
+  addFollow(id: number) {
+    return this.http.post(this.baseUrl + 'likes/' + id, {});
   }
 
   getLikes(predicate: string, pageNumber: number, pageSize: number) {

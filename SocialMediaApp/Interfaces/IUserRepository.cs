@@ -10,8 +10,9 @@ namespace SocialMediaApp.Interfaces
         Task<IEnumerable<AppUser>> GetUsersAsync();
         Task<AppUser> GetUserByIdAsync(int id);
         Task<AppUser> GetUserByUsernameAsync(string username);
+        Task<AppUser> GetUserByUUIDAsync(string uuid);
         Task<PagedList<MemberDto>> GetMembersAsync(UserParams userParams);
-        Task<MemberDto> GetMemberAsync(string username);
+        Task<MemberDto> GetMemberAsync(string uuid);
         Task<string> GetUserGender(string username);
     }
 }

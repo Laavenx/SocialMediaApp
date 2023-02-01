@@ -27,15 +27,16 @@ namespace SocialMediaApp.SignalR
         public override async Task OnConnectedAsync()
         {
             var httpContext = Context.GetHttpContext();
-            var otherUser = httpContext.Request.Query["user"];
-            var groupName = GetGroupName(Context.User.GetUsername(), otherUser);
+            var uuid = httpContext.Request.Query["user"];
+            var otherUser = await _uow.UserRepository.GetMemberAsync(uuid);
+            var groupName = GetGroupName(Context.User.GetUsername(), otherUser.UserName);
             await Groups.AddToGroupAsync(Context.ConnectionId, groupName);
             var group = await AddToGroup(groupName);
 
             await Clients.Group(groupName).SendAsync("UpdatedGroup", group);
 
             var messages = await _uow.MessageRepository
-                .GetMessageThread(Context.User.GetUsername(), otherUser);
+                .GetMessageThread(Context.User.GetUsername(), otherUser.UserName);
 
             if (_uow.HasChanges()) await _uow.Complete();
 
@@ -53,20 +54,19 @@ namespace SocialMediaApp.SignalR
         {
             var username = Context.User.GetUsername();
 
-            if (username == createMessageDto.recipientUsername.ToLower())
+            var recipient = await _uow.UserRepository.GetUserByUUIDAsync(createMessageDto.UUID);
+            if (recipient == null) throw new HubException("Not found user");
+            if (username == recipient.UserName)
                 throw new HubException("You cannot send messages to yourself");
 
             var sender = await _uow.UserRepository.GetUserByUsernameAsync(username);
-            var recipient = await _uow.UserRepository.GetUserByUsernameAsync(createMessageDto.recipientUsername);
-
-            if (recipient == null) throw new HubException("Not found user");
 
             var message = new Message
             {
                 Sender = sender,
                 Recipient = recipient,
-                SenderUsername = sender.UserName,
-                RecipientUsername = recipient.UserName,
+                SenderUsername = sender.KnownAs,
+                RecipientUsername = recipient.KnownAs,
                 Content = createMessageDto.Content
             };
 

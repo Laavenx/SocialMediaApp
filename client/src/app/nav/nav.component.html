@@ -1,31 +1,40 @@
-<a routerLink="/">Social Media App</a>
-<hr>
-<div class="div">
-    <ng-container *ngIf="(accountService.currentUser$ | async) as user">
-        <a routerLink="/members">Members</a>
-        <hr>
-        <a routerLink="/lists">Lists</a>
-        <hr>
-        <a routerLink="/messages">Messages</a>
-        <hr>
-        <a routerLink="/member/edit">Edit</a>
-        <hr>
-        <a *appHasRole="['Admin', 'Moderator']" routerLink="/admin">admin</a>
-        <hr>
-        {{user.knownAs}}
-        <img src="{{user.photoUrl || './assets/user.png'}}" alt="user main photo">
-    </ng-container>
-    <a routerLink="/errors">Errors</a>
-</div>
-
-<form *ngIf="(accountService.currentUser$ | async) === null" #loginForm="ngForm" (ngSubmit)="login()"
-    autocomplete="off">
-    <input name="username" [(ngModel)]="model.username" type="text" placeholder="login">
-    <input name="password" [(ngModel)]="model.password" type="password" placeholder="password">
-    <button type="submit">submit</button>
-</form>
-
-<div *ngIf="accountService.currentUser$ | async">
-    <button (click)="logout()">Logout</button>
-    <h1>Logged in</h1>
+<div class="navbar">
+    <div class="default-nav">
+        <div class="nav-left">
+            <a href="/">
+                <img class="biker-img"
+                src="{{'./assets/cyclingclub-logo.webp'}}"
+                alt="cyclingclub logo"
+                >
+            </a>
+            <ng-container *ngIf="(accountService.currentUser$ | async) as user">
+                <a routerLink="/members">Find Bikers</a>
+                <a routerLink="/lists">Followed</a>
+                <a routerLink="/messages">Messages</a>
+                <a routerLink="/member/edit">Edit</a>
+                <a *appHasRole="['Admin', 'Moderator']" routerLink="/admin">admin</a>
+            </ng-container>
+        </div>
+        <div class="nav-right">
+            <ng-container *ngIf="(accountService.currentUser$ | async) as user">
+                <button (click)="logout()">Logout</button>
+                <img class="user-img" src="{{user.photoUrl || './assets/user.png'}}" alt="user main photo">
+            </ng-container>
+        </div>
+    </div>
+    <div class="mobile-nav">
+        <div>
+            <div class="menu" (click)="openMenu()">
+                <i class="fa fa-solid fa-bars fa-lg"></i>
+            </div>
+            <div>
+                <a href="/">
+                    <img class="biker-img"
+                    src="{{'./assets/cyclingclub-logo.webp'}}"
+                    alt="cyclistclub logo"
+                    >
+                </a>
+            </div>
+        </div>
+    </div>
 </div>

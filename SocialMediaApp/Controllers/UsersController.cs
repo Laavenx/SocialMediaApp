@@ -27,15 +27,15 @@ namespace SocialMediaApp.Controllers
         [HttpGet]
         public async Task<ActionResult<PagedList<MemberDto>>> GetUsers([FromQuery]UserParams userParams)
         {
-            var gender = await _uow.UserRepository.GetUserGender(User.GetUsername());
             userParams.CurrentUsername = User.GetUsername();
 
-            if (string.IsNullOrEmpty(userParams.Gender))
-            {
-                userParams.Gender = gender == "male" ? "female" : "male";
-            }
-
             var users = await _uow.UserRepository.GetMembersAsync(userParams);
+
+            foreach (var user in users)
+            {
+                var userLike = await _uow.LikesRepository.GetUserLike(User.GetUserId(), user.Id);
+                if (userLike != null) user.IsLiked = true;
+            }
 
             Response.AddPaginationHeader(new PaginationHeader(users.CurrentPage, users.PageSize,
                 users.TotalCount, users.TotalPages));
@@ -43,10 +43,15 @@ namespace SocialMediaApp.Controllers
             return Ok(users);
         }
 
-        [HttpGet("{username}")]
-        public async Task<ActionResult<MemberDto>> GetUser(string username)
+        [HttpGet("{uuid}")]
+        public async Task<ActionResult<MemberDto>> GetUser(string uuid)
         {
-            return await _uow.UserRepository.GetMemberAsync(username);
+            var user = await _uow.UserRepository.GetMemberAsync(uuid);
+
+            var userLike = await _uow.LikesRepository.GetUserLike(User.GetUserId(), user.Id);
+            if (userLike != null) user.IsLiked = true;
+
+            return Ok(user);
         }
 
         [HttpPut]
@@ -70,6 +75,8 @@ namespace SocialMediaApp.Controllers
 
             if (user == null) return NotFound();
 
+            if (user.Photos.Count == 3) return BadRequest("Too many photos");
+
             var result = await _photoService.AddPhotoAsync(file);
 
             if (result.Error != null) return BadRequest(result.Error.Message);
@@ -87,7 +94,7 @@ namespace SocialMediaApp.Controllers
             if (await _uow.Complete())
             {
                 return CreatedAtAction(nameof(GetUser),
-                    new { username = user.UserName }, _mapper.Map<PhotoDto>(photo));
+                    new { uuid = user.UUID }, _mapper.Map<PhotoDto>(photo));
 
             }
 

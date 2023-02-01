@@ -14,6 +14,7 @@ export class MessageListComponent implements OnInit {
   container = 'Unread';
   pageNumber = 1;
   PageSize = 5;
+  messagesExists: boolean = false;
   
   constructor(private messageService: MessageService) { }
 
@@ -26,6 +27,9 @@ export class MessageListComponent implements OnInit {
       next: response => {
         this.messages = response.result;
         this.pagination = response.pagination;
+        if(this.messages.length > 0) {
+          this.messagesExists = true;
+        }
       }
     })
   }
