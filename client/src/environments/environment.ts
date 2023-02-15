@@ -5,7 +5,8 @@
 export const environment = {
   production: false,
   apiUrl: 'https://localhost:5001/api/',
-  hubUrl: 'https://localhost:5001/hubs/'
+  hubUrl: 'https://localhost:5001/hubs/',
+  OAuthId: '98426669424-dtldc436tn15hs190kt4q4vkat29v54p.apps.googleusercontent.com'
 };
 
 /*

@@ -9,6 +9,7 @@ import { MembersService } from '../_services/members.service';
   styleUrls: ['./nav.component.scss']
 })
 export class NavComponent implements OnInit {
+  isMenuOpen: boolean = false;
 
   constructor(public accountService: AccountService, private router: Router) { }
 
@@ -20,6 +21,6 @@ export class NavComponent implements OnInit {
   }
 
   openMenu() {
-    
+    this.isMenuOpen = !this.isMenuOpen;
   }
 }

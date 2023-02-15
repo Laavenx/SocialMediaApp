@@ -26,3 +26,13 @@
         }
     }
 }
+
+input {
+    border: none;
+}
+
+input[type="file"] {
+    height: auto;
+    width: 80%;
+    font-size: 14px;
+}

@@ -1,3 +1,5 @@
+@import 'src/styles/variables.scss';
+
 form {
     margin-top: 20px;
     margin-bottom: 12px;
@@ -5,5 +7,45 @@ form {
 
     select, button {
         margin: 8px 4px 8px 4px;
+    }
+}
+
+.messages-container {
+    width: 800px;
+    border: 1px solid $border-color;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    margin-top: 8px;
+}
+
+.message-content {
+    padding: 5px 10px 5px 10px;
+    border-radius: 5.5px;
+    background-color: rgb(208, 208, 208);
+}
+
+.message-wrapper {
+    padding: 14px 14px 14px 14px;
+}
+
+.no-messages {
+    margin-bottom: 10px;
+}
+
+@media (max-width: 850px) {
+    .messages-container{
+        width: 600px;
+    }
+}
+
+@media (max-width: 650px) {
+    .messages-container{
+        width: 450px;
+    }
+}
+
+@media (max-width: 500px) {
+    .messages-container{
+        width: 400px;
     }
 }

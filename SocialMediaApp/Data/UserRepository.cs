@@ -33,6 +33,7 @@ namespace SocialMediaApp.Data
             var query = _context.Users.AsQueryable();
 
             query = query.Where(u => u.UserName != userParams.CurrentUsername);
+            query = query.Where(u => u.KnownAs != null);
 
             query = userParams.OrderBy switch
             {

@@ -6,13 +6,19 @@
     </select>
 </form>
 
+<app-pagination [pagination]="pagination" (page)="pageChanged($event)"></app-pagination>
+
 <div *ngIf="messagesExists === false">
-    <div>No messages</div>
+    <div class="no-messages">No messages</div>
 </div>
 
-<div *ngIf="messages">
-    <div *ngFor="let message of messages">
-        {{message.content}}, {{message.id}}, {{message.recipientUsername}}, {{message.senderUsername}}
-        <button (click)="stopPropagation()" (click)="deleteMessage(message.id)">Delete</button>
+<div class="messages-container" *ngIf="messagesExists">
+    <div class="message-wrapper" *ngFor="let message of messages">
+        <div class="message-content">
+            {{message.content}}, {{message.id}}, {{message.recipientUsername}}, {{message.senderUsername}}
+            <button (click)="stopPropagation()" (click)="deleteMessage(message.id)">Delete</button>
+        </div>
     </div>
 </div>
+
+<app-pagination [pagination]="pagination" (page)="pageChanged($event)"></app-pagination>

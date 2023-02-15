@@ -52,6 +52,11 @@ namespace SocialMediaApp.SignalR
 
         public async Task SendMessage(CreateMessageDto createMessageDto)
         {
+            if (createMessageDto.Content.Length > 1024 || createMessageDto.Content.Length == 0)
+            {
+                return;
+            }
+
             var username = Context.User.GetUsername();
 
             var recipient = await _uow.UserRepository.GetUserByUUIDAsync(createMessageDto.UUID);
@@ -84,7 +89,7 @@ namespace SocialMediaApp.SignalR
                 if (connections != null)
                 {
                     await _presenceHub.Clients.Clients(connections).SendAsync("NewMessageReceived",
-                        new { username = sender.UserName, knownAs = sender.KnownAs });
+                        new { uuid = sender.UUID, knownAs = sender.KnownAs });
                 }
             }
 

@@ -60,12 +60,15 @@ form {
     border-radius: 5px;
 }
 
-input {
+input, .input {
     padding-left: 8px;
     padding-right: 8px;
+    height: 34px;
+    margin: 2.5px 0px 2.5px 0px;
+    border: solid rgb(215, 206, 206) 1px;
 }
 
-input:focus, select:focus {
+input:focus, select:focus, .input:focus {
     animation: animateColorTransition 0.2s forwards;
     animation-timing-function: ease-in-out;
 }
@@ -81,7 +84,7 @@ input:focus, select:focus {
 }
 
 button, select {
-    background-color: #FDB746;
+    background-color: $button-orange;
     border: solid rgba(255, 0, 0, 0) 1px;
     border-radius: 4px;
     padding: 2px 4px 2px 4px;

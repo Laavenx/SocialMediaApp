@@ -2,20 +2,8 @@
 class="register-form">
     <h2>Register</h2>
 
-    <div class="gender-input">
-        <label>Gender:</label>
-        <div>
-            Male
-            <input type="radio" value="male" formControlName="gender">
-        </div>
-        <div>
-            Female
-            <input type="radio" value="female" formControlName="gender">
-        </div>
-    </div>
-
     <app-text-input [formControl]="registerForm.controls['username']" [label]="'Username'"></app-text-input>
-    <app-text-input [formControl]="registerForm.controls['knownAs']" [label]="'Nickname'"></app-text-input>
+    <app-text-input [formControl]="registerForm.controls['knownAs']" [label]="'Display Name'"></app-text-input>
     <app-text-input [formControl]="registerForm.controls['city']" [label]="'City'"></app-text-input>
     <app-text-input [formControl]="registerForm.controls['country']" [label]="'Country'"></app-text-input>
     <app-text-input [formControl]="registerForm.controls['password']" [label]="'Password'"

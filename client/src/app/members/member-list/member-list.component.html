@@ -3,7 +3,7 @@
         <form #form="ngForm" (ngSubmit)="loadMembers()" autocomplete="off">
             <select name="gender" [(ngModel)]="userParams.orderBy">
                 <option value="lastActive">Last Active</option>
-                <option value="createdAt">createdAt</option>
+                <option value="createdAt">Created At</option>
             </select>
     
             <button type="submit">Apply filters</button>

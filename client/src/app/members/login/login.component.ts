@@ -1,6 +1,7 @@
 import { SocialAuthService } from '@abacritt/angularx-social-login';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { SocialUser } from "@abacritt/angularx-social-login";
 import { AccountService } from 'src/app/_services/account.service';
 
 @Component({
@@ -14,16 +15,9 @@ export class LoginComponent implements OnInit {
   model: any = {}
   validationErrors?: string[];
 
-  constructor(public accountService: AccountService, private router: Router,
-     private authService: SocialAuthService) { }
+  constructor(public accountService: AccountService, private router: Router) { }
 
   ngOnInit(): void {
-  }
-
-  loginGoogle() {
-    this.authService.authState.subscribe((user) => {
-      console.log(user,"ser");
-    })
   }
 
   login() {

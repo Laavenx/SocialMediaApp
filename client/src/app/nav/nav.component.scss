@@ -15,22 +15,6 @@
         div {
             display: flex;
             align-items: center;
-
-            a,
-            img,
-            button {
-                margin: 8px;
-                text-decoration: none;
-            }
-
-            a {
-                color: rgb(255, 255, 255);
-            }
-
-            a:hover {
-                filter: brightness(85%);
-                transition: 0.3s;
-            }
         }
     }
 
@@ -42,12 +26,24 @@
             display: flex;
             align-items: center;
             justify-content: center;
-
-            a {
-                margin: 8px;
-            }
         }
     }
+}
+
+a,
+img,
+button {
+    margin: 8px;
+    text-decoration: none;
+}
+
+a {
+    color: rgb(255, 255, 255);
+}
+
+a:hover {
+    filter: brightness(85%);
+    transition: 0.3s;
 }
 
 .menu {
@@ -60,6 +56,10 @@
     border-radius: 5px;
 }
 
+.menu:hover {
+    background-color: $button-orange;
+    transition: 0.4s;
+}
 
 .biker-img {
     height: 25px;
@@ -71,9 +71,43 @@
     border-radius: 50%;
 }
 
+.mobile-menu {
+    background-color: $blue;
+    z-index: 600;
+    height: auto;
+    position: absolute;
+    top: 65px;
+    width: 230px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding-bottom: 5px;
+
+    a {
+        display: flex;
+        justify-content: center;
+        width: 180px;
+        height: 30px;
+        border-radius: 5px;
+        background-color: $button-orange;
+        margin-top: 5px;
+        margin-bottom: 5px;
+        color: black;
+    }
+
+    a:hover {
+        margin-top: 5px;
+        margin-bottom: 5px;
+    }
+}
+
 @media (min-width: 800px) {
     .default-nav {
         display: flex !important;
+    }
+    
+    .mobile-menu {
+        display: none !important;
     }
 }
 

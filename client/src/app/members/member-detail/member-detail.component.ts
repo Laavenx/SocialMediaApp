@@ -44,7 +44,7 @@ export class MemberDetailComponent implements OnInit {
     })
   }
 
-  sendMessage(member: Member) {
+  sendMessage() {
     this.router.navigateByUrl(
       this.router.createUrlTree(
         ['/messages'], {queryParams: { user: this.member.uuid }}

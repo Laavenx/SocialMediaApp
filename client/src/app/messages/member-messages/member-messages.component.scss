@@ -1,27 +1,99 @@
 @import 'src/styles/variables.scss';
 
+.container-top {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    margin-top: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid $border-color;
+
+    img {
+        width: 75px;
+        height: 75px;
+        border-radius: 50%;
+    }
+}
+
 form {
-    padding: 0px 4px 0px 4px;
+    padding: 15px 4px 0px 4px;
     border: 0;
-    border-top: 1px solid $border-color;
     border-radius: 0;
+    border-top: 1px solid $border-color;
 
     select, button {
         margin: 8px 4px 8px 4px;
     }
+
+    button {
+        font-size: 22px;
+    }
+
+    margin-bottom: 15px;
+
+    input {
+        border: none;
+        width: 0;
+        height: 0;
+        padding: 0;
+        margin: 0;
+    }
 }
 
-.message-container{
+.send-message {
+    width: 200px;
+    max-height: 100px !important;
+    line-height: 1.1;
+    word-wrap: break-word;
+    height: max-content;
+    overflow: auto;
+    white-space: normal;
+    background-color: white;
+    padding-top: 7px;
+    padding-bottom: 7px;
+
+    .height-adder {
+        height: 27px;
+    }
+}
+
+.member-message-container{
     margin-top: 20px;
+    margin-bottom: 20px;
     width: 800px;
     border: 1px solid $border-color;
     border-radius: 10px;
+}
+
+.message-container {
+    overflow: auto;
+    max-height: 500px;
+    margin-top: 15px;
+    margin-bottom: 15px;
 }
 
 .message-wrap {
     display: flex;
     padding: 14px 14px 14px 14px;
     flex-direction: row;
+    width: 100%;
+}
+
+.messsage-img-container {
+    display: flex;
+    align-items: flex-end;
+    padding-right: 4px;
+    
+    p {
+        margin-left: 8px;
+    }
+}
+
+.message-img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
 }
 
 .message {
@@ -30,6 +102,31 @@ form {
     color:white;
     display: flex;
     flex-direction: column;
+    max-width: calc(100% - 33.99px);
+
+    ::selection {
+        background: $select-color;
+    }
+}
+
+.message-content {
+    font-size: 16px;
+    overflow-wrap: break-word;
+}
+
+.message-error {
+    width: 100%;
+    text-align: center;
+    color: red;
+    margin-bottom: 15px;
+}
+
+.start-message {
+    width: 100%;
+    color: grey;
+    align-items: center;
+    margin-top: 50px;
+    margin-bottom: 50px;
 }
 
 .message-received {
@@ -38,7 +135,6 @@ form {
 
 .message-sent {
     background-color: rgb(20, 166, 20);
-    margin-left: auto;
 }
 
 .time-text {
@@ -51,14 +147,20 @@ p {
 }
 
 @media (max-width: 850px) {
-    .message-container{
+    .member-message-container{
         width: 600px;
     }
 }
 
-@media (max-width: 600px) {
-    .message-container{
+@media (max-width: 650px) {
+    .member-message-container{
         width: 450px;
+    }
+}
+
+@media (max-width: 500px) {
+    .member-message-container{
+        width: 400px;
     }
 }
   

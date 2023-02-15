@@ -5,9 +5,9 @@
         <p>Introduction:</p>
         <textarea [(ngModel)]="member.introduction" name="introduction" rows="6"></textarea>
 
-        <label>City:</label>
+        <p>City:</p>
         <input type="text" [(ngModel)]="member.city" name="city">
-        <label>Country:</label>
+        <p>Country:</p>
         <input type="text" [(ngModel)]="member.country" name="country">
 
         <button type="submit" [disabled]="!editForm.dirty" form="editForm">Edit</button>

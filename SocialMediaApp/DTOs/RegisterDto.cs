@@ -17,8 +17,6 @@ namespace SocialMediaApp.DTOs
         [MaxLength(16)]
         public string KnownAs { get; set; }
         [Required]
-        public string Gender { get; set; }
-        [Required]
         [MaxLength(128)]
         public string City { get; set; }
         [Required]

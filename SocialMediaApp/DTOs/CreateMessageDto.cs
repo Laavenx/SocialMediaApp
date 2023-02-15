@@ -1,4 +1,6 @@
-﻿namespace SocialMediaApp.DTOs
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace SocialMediaApp.DTOs
 {
     public class CreateMessageDto
     {

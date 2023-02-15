@@ -83,26 +83,29 @@ namespace SocialMediaApp.Data
 
         public async Task<IEnumerable<MessageDto>> GetMessageThread(string currentUserName, string recipientUserName)
         {
-            var messagesQuery = _context.Messages
-                .Where(
-                    m => m.RecipientUsername == currentUserName && m.RecipientDeleted == false &&
-                    m.SenderUsername == recipientUserName ||
-                    m.RecipientUsername == recipientUserName && m.SenderDeleted== false &&
-                    m.SenderUsername == currentUserName
-                )
-                .OrderBy(m => m.MessageSent)
-                .AsQueryable();
+            var unreadMessages = await _context.Messages.Where(m => m.DateRead == null
+                            && m.RecipientUsername == currentUserName).ToListAsync();
 
-            var unreadMessage = messagesQuery.Where(m => m.DateRead == null
-                && m.RecipientUsername == currentUserName).ToList();
-            
-            if (unreadMessage.Any()) 
+            if (unreadMessages.Any())
             {
-                foreach (var message in unreadMessage) 
-                {   
+                foreach (var message in unreadMessages)
+                {
                     message.DateRead = DateTime.UtcNow;
                 }
+
+                await _context.SaveChangesAsync();
             }
+
+
+            var messagesQuery = _context.Messages
+            .Where(
+                m => m.RecipientUsername == currentUserName && m.RecipientDeleted == false &&
+                m.SenderUsername == recipientUserName ||
+                m.RecipientUsername == recipientUserName && m.SenderDeleted== false &&
+                m.SenderUsername == currentUserName
+            )
+            .OrderBy(m => m.MessageSent)
+            .AsQueryable();
 
             return await messagesQuery.ProjectTo<MessageDto>(_mapper.ConfigurationProvider).ToListAsync();
         }

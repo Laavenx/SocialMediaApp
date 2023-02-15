@@ -38,3 +38,12 @@
         </div>
     </div>
 </div>
+<div *ngIf="isMenuOpen" class="mobile-menu">
+    <ng-container *ngIf="(accountService.currentUser$ | async) as user">
+        <a routerLink="/members">Find Bikers</a>
+        <a routerLink="/lists">Followed</a>
+        <a routerLink="/messages">Messages</a>
+        <a routerLink="/member/edit">Edit</a>
+        <a *appHasRole="['Admin', 'Moderator']" routerLink="/admin">admin</a>
+    </ng-container>
+</div>

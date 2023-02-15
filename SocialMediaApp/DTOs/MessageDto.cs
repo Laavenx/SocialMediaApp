@@ -1,4 +1,5 @@
-﻿using SocialMediaApp.Entities;
+﻿using System.ComponentModel.DataAnnotations;
+using SocialMediaApp.Entities;
 
 namespace SocialMediaApp.DTOs
 {

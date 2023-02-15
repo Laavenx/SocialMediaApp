@@ -1,21 +1,45 @@
-<div *ngIf="(messageService.messageThread$ | async)?.length === 0">
-    No messages yet
-</div>
+<div class="member-message-container" *ngIf="this.member">
+    <div class="container-top">
+        <img src="{{member?.photoUrl || './assets/user.png'}}">
+        <p>{{member.knownAs}}</p>
+    </div>
 
-<div *ngIf="(messageService.messageThread$ | async)?.length > 0" class="message-container">
-    <div *ngFor="let message of (messageService.messageThread$ | async)"
+    <div class="message start-message" *ngIf="(messageService.messageThread$ | async)?.length === 0">
+        Start of your conversation
+    </div>
+
+    <div #messages class="message-container">
+        <div *ngFor="let message of (messageService.messageThread$ | async)"
         class="message-wrap"
-    >
-        <div 
-            [ngClass]="message.senderUsername === userKnownAs ? 'message-received' : 'message-sent'"
-            class="message"
         >
-            <p>{{message.content}}</p>
-            <p class="time-text">{{ (message.dateRead !== null) ? (message.dateRead | timeago: 'dd/MM/yyyy') : " (unread)" }}</p>
+            <div class="messsage-img-container" *ngIf="message.senderUsername === currentUser.knownAs">
+                <img class="message-img" src="{{currentUser.photoUrl || './assets/user.png'}}">
+            </div>
+            <div class="messsage-img-container" *ngIf="message.senderUsername !== currentUser.knownAs">
+                <img class="message-img" src="{{member.photoUrl || './assets/user.png'}}">
+            </div>
+            <div 
+                [ngClass]="message.senderUsername === currentUser.knownAs ? 'message-received' : 'message-sent'"
+                class="message"
+            >
+                <div class="message-user" *ngIf="message.senderUsername === currentUser.knownAs">
+                    <p>{{currentUser?.knownAs}}</p>
+                </div>
+                <div class="message-user" *ngIf="message.senderUsername !== currentUser.knownAs">
+                    <p>{{member?.knownAs}}</p>
+                </div>
+                <div>
+                    <p class="message-content">{{message.content}}</p>
+                    <p class="time-text">{{ (message.dateRead !== null) ? (message.dateRead | timeago: 'dd/MM/yyyy') : " (unread)" }}</p>
+                </div>
+            </div>
         </div>
     </div>
+
     <form #messageForm="ngForm" (ngSubmit)="sendMessage()" autocomplete="off">
-        <input type="text" name="messageContent" [(ngModel)]="messageContent">
-        <button [disabled]="!messageForm.valid" type="submit">Send</button>
+        <span #sendMessageInput (keyup)="sendMessageChange($event)" class="send-message input" contenteditable="true"></span>
+        <input required type="text" name="messageContent" [(ngModel)]="messageContent">
+        <button (click)="resetSpan()" [disabled]="!messageForm.valid || SpanLength > 1024" type="submit">Send</button>
     </form>
+    <div class="message-error" *ngIf="SpanLength > 1024">Message can't exceed 1024 characters</div>
 </div>

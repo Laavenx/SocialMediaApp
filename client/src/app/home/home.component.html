@@ -2,9 +2,11 @@
     <img src="{{'./assets/cycling.webp'}}">
     <article>
         <h1>Meetup and connect with cyclists near you.</h1>
-        <span>
+        <span *ngIf="!(accountService.currentUser$ | async) as user">
             <a routerLink="/member/login">Join now!</a><br>
             <span class="description">A community of cyclists, people who are supporting eachother to break their limits, and to become stronger together!</span>
         </span>
+        <span *ngIf="(accountService.currentUser$ | async) as user">
+            <a routerLink="/members">Find cyclists</a></span>
     </article>
 </section>

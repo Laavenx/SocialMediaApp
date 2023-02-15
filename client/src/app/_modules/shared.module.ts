@@ -5,6 +5,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 import { FileUploadModule } from 'ng2-file-upload';
 import { TimeagoModule } from 'ngx-timeago';
 import { SocialLoginModule, SocialAuthServiceConfig } from '@abacritt/angularx-social-login';
+import { environment } from 'src/environments/environment';
 import { GoogleLoginProvider } from '@abacritt/angularx-social-login';
 
 @NgModule({
@@ -20,25 +21,7 @@ import { GoogleLoginProvider } from '@abacritt/angularx-social-login';
     FileUploadModule,
     TimeagoModule.forRoot(),
   ],
-  providers: [
-    {
-      provide: 'SocialAuthServiceConfig',
-      useValue: {
-        autoLogin: false,
-        providers: [
-          {
-            id: GoogleLoginProvider.PROVIDER_ID,
-            provider: new GoogleLoginProvider(
-              '98426669424-dtldc436tn15hs190kt4q4vkat29v54p.apps.googleusercontent.com'
-            )
-          },
-        ],
-        onError: (err) => {
-          console.error(err);
-        }
-      } as SocialAuthServiceConfig,
-    }
-  ],
+  providers: [],
   exports: [
     ToastrModule,
     NgxSpinnerModule,

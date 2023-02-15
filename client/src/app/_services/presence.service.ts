@@ -44,12 +44,12 @@ export class PresenceService {
       this.onlineUsersSource.next(usernames);
     })
 
-    this.hubConnection.on('NewMessageReceived', ({username, knownAs}) => {
+    this.hubConnection.on('NewMessageReceived', ({uuid, knownAs}) => {
       this.toastr.info(knownAs + ' sent you a new message.')
       .onTap
       .pipe(take(1))
       .subscribe({
-        next: () => this.router.navigateByUrl('/messages?user=' + username)
+        next: () => this.router.navigateByUrl('/messages?user=' + uuid)
       })
     })
   };

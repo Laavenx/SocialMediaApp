@@ -11,9 +11,9 @@ import { MessageService } from 'src/app/_services/message.service';
 export class MessageListComponent implements OnInit {
   messages?: Message[];
   pagination?: Pagination;
-  container = 'Unread';
+  container = 'Outbox';
   pageNumber = 1;
-  PageSize = 5;
+  PageSize = 10;
   messagesExists: boolean = false;
   
   constructor(private messageService: MessageService) { }
@@ -38,5 +38,12 @@ export class MessageListComponent implements OnInit {
     this.messageService.deleteMessage(id).subscribe({
       next: () => this.messages?.splice(this.messages.findIndex(m => m.id === id), 1)
     })
+  }
+
+  pageChanged(event: any) {
+    if (this.pageNumber !== event.page){
+      this.pageNumber = event;
+      this.loadMessages();
+    }
   }
 }

@@ -55,18 +55,17 @@ export class RegisterComponent implements OnInit {
   }
 
   register() {
+    console.log("registering")
     if (!this.registerForm.valid) this.registerForm.markAllAsTouched();
-    else {
-      this.accountService.register(this.registerForm.value).subscribe({
-        next: () => {
-          this.router.navigateByUrl('/members')
-        },
-        error: (err) => {
-          console.log(err);
-          this.validationErrors = err;
-        }
-      });
-    }
+    this.accountService.register(this.registerForm.value).subscribe({
+      next: () => {
+        this.router.navigateByUrl('/members')
+      },
+      error: (err) => {
+        console.log(err);
+        this.validationErrors = err;
+      }
+    });
   }
 
   cancel() {

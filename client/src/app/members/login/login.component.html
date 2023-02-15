@@ -3,15 +3,11 @@
         class="login-form"
         autocomplete="off">
         <h2>Sign In</h2>
-
-        <div class="sign-in-external">
-            <button type="button" (click)="loginGoogle()">Sign In With  Google</button>
-        </div>
-
+        
         <input name="username" [(ngModel)]="model.username" type="text" placeholder="Login">
         <input name="password" [(ngModel)]="model.password" type="password" placeholder="Password">
-        <button type="submit">Login</button>
 
+        <button type="submit" class="login-btn">Login</button>
         <button (click)="registerToggle()" class="register">Register</button>
         <div *ngIf="validationErrors">
             <div *ngIf="!isArray(validationErrors)">
